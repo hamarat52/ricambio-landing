@@ -81,7 +81,14 @@ export const sceneRange = (id: SceneId): SceneRange => SCENES.find((s) => s.id =
  */
 export const BEATS = {
   hero: { exit: [0.7, 1] },
-  snap: { dolly: [0, 0.35], crack: [0.35, 0.5], snap: [0.5, 0.55], fall: [0.55, 0.8], droop: [0.8, 1] },
+  snap: {
+    dolly: [0, 0.35],
+    crack: [0.4, 0.52],
+    snap: [0.52, 0.56],
+    fall: [0.56, 0.8],
+    droop: [0.84, 0.97],
+    annotate: [0.86, 1],
+  },
   search: { pullOut: [0, 0.25], cards: [0.25, 0.85], hold: [0.85, 1] },
   request: { chips: [0, 0.35], button: [0.35, 0.55], beacon: [0.55, 0.7], others: [0.7, 1] },
   scan: {

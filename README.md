@@ -42,6 +42,23 @@ All copy lives in [`src/content.ts`](src/content.ts): the `en` object (default) 
 
 The scroll track is `TRACK.desktopVh` (1300vh) tall on desktop and `TRACK.mobileVh` (1500vh) on mobile. The same values appear as `--track-vh` in `src/styles.css`.
 
+## The car
+
+### Clay or painted
+
+`CAR_FINISH` at the top of `src/content.ts` switches the look:
+
+- `'painted'` (default): deep Italian red `#9E1B1E`, clearcoat 1, clearcoat roughness 0.15, roughness 0.35. It reads as a scale model.
+- `'clay'`: warm clay-red, roughness 0.8, no clearcoat. It reads as a designer's clay model.
+
+### Drop in your own model
+
+Put a file at `public/models/car.glb`, then restart `npm run dev` (or rebuild). It replaces the procedural body, glass and wheels. The procedural interior and the vent stay, because the story needs them.
+
+- Scale: 1 unit = 1 metre. The front faces +X, the driver's side (left-hand drive) is at −Z, and the wheels sit on y = 0. Centre the car on the origin.
+- The roof cut-away (a horizontal clipping plane) is applied to every material in the file. The separate driver's-door cut-away only works on the procedural body.
+- The model must not carry any manufacturer logo, badge or shield grille (see Legal below).
+
 ## Project structure
 
 ```

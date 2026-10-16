@@ -3,8 +3,12 @@ import { sceneRange, type SceneId } from '../content'
 import { windowed } from '../lib/remap'
 import { useProgressEffect } from '../lib/useProgress'
 
-/** Global-progress width of the cross-fade at each scene boundary. */
-const FADE = 0.01
+/**
+ * Global-progress width of the fade at each scene boundary. The outgoing
+ * layer is gone by the boundary and the next one starts after it, so two
+ * headlines never overlap (one idea per screen).
+ */
+const FADE = 0.006
 
 interface Props {
   id: SceneId
@@ -26,8 +30,8 @@ export function SceneLayer({ id, tone = 'light', className = '', children }: Pro
   useProgressEffect((p) => {
     const el = ref.current
     if (!el) return
-    const a = r.start === 0 ? -1 : r.start - FADE / 2
-    const b = r.end === 1 ? 2 : r.end + FADE / 2
+    const a = r.start === 0 ? -1 : r.start
+    const b = r.end === 1 ? 2 : r.end
     const o = windowed(p, a, b, FADE, FADE)
     el.style.opacity = o.toFixed(3)
     el.dataset.active = o > 0.5 ? 'true' : 'false'

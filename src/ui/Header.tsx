@@ -1,4 +1,5 @@
 import { BRAND } from '../content'
+import { unlockAudio } from '../lib/sound'
 import { useCopy, useStore } from '../store'
 import { LangToggle } from './LangToggle'
 
@@ -13,7 +14,16 @@ export function Header() {
       </a>
       <div className="header-controls">
         <LangToggle />
-        <button type="button" className="chip-btn" aria-pressed={sound} title={c.ui.soundHint} onClick={toggleSound}>
+        <button
+          type="button"
+          className="chip-btn"
+          aria-pressed={sound}
+          title={c.ui.soundHint}
+          onClick={() => {
+            unlockAudio()
+            toggleSound()
+          }}
+        >
           <span className="dot" aria-hidden="true" />
           {c.ui.soundLabel}: {sound ? c.ui.soundOn : c.ui.soundOff}
         </button>

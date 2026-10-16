@@ -41,7 +41,10 @@ export interface AppState {
   mobile: boolean
   /** True once the 3D scene has compiled and drawn its first frame. */
   ready3D: boolean
+  /** Lowered by the performance monitor: bloom off first, then fewer points. */
+  quality: 'high' | 'medium' | 'low'
   setProgress: (p: number) => void
+  setQuality: (q: AppState['quality']) => void
   setLang: (lang: Lang) => void
   toggleSound: () => void
   setReady3D: (v: boolean) => void
@@ -60,6 +63,8 @@ export const useStore = create<AppState>()(
     reducedMotion: media('(prefers-reduced-motion: reduce)') || readParam('reduced') !== null,
     mobile: media('(max-width: 767px)'),
     ready3D: false,
+    quality: 'high',
+    setQuality: (quality) => set({ quality }),
     setProgress: (p) => {
       const idx = sceneIndexAt(p)
       if (idx !== get().sceneIndex) set({ progress: p, sceneIndex: idx, scene: SCENES[idx].id })
