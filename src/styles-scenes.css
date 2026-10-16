@@ -286,3 +286,190 @@
     bottom: 30%;
   }
 }
+
+/* ─── Scene 06 · checks + print ──────────────────────────────────────────── */
+.checks {
+  position: absolute;
+  left: var(--gutter);
+  top: calc(var(--header-h) + 24px);
+  display: grid;
+  gap: 12px;
+  width: min(25rem, calc(100vw - 2 * var(--gutter)));
+}
+
+.checks__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-card {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow:
+    0 1px 0 rgba(17, 17, 17, 0.12),
+    0 16px 34px -22px rgba(17, 17, 17, 0.6);
+  opacity: 0;
+}
+
+.check-card__tick {
+  width: 34px;
+  height: 34px;
+}
+
+.check-card__tick circle {
+  fill: none;
+  stroke: rgba(17, 17, 17, 0.25);
+  stroke-width: 1.5;
+}
+
+.check-card__tick path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* teal = a passed check (white tick on teal, 4.9:1) */
+.check-card.is-ok .check-card__tick circle {
+  fill: var(--teal);
+  stroke: var(--teal);
+}
+
+.check-card p {
+  margin: 0;
+}
+
+.check-card__title {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.check-card__body {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+/* the small red footnote: car red on paper, 5.5:1 */
+.checks__foot {
+  margin: 4px 0 0;
+  max-width: 24rem;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: var(--paper);
+  justify-self: start;
+}
+
+.pipeline {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--header-h) + 14px);
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  visibility: hidden;
+}
+
+.pipeline ol {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border-radius: 999px;
+  background: rgba(209, 215, 222, 0.9);
+  box-shadow: 0 10px 24px -18px rgba(17, 17, 17, 0.7);
+}
+
+.pipeline li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3d434b;
+}
+
+.pipeline li.is-done {
+  color: #1f5f6e;
+}
+
+.pipeline li.is-done::after {
+  content: ' ✓';
+}
+
+.pipeline li.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pipeline__timer {
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(17, 17, 17, 0.86);
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.print__head {
+  max-width: min(34rem, calc(100vw - 2 * var(--gutter)));
+}
+
+.print__head .display {
+  font-size: clamp(1.9rem, 4.2vw, 4.2rem);
+}
+
+.caliper--light svg {
+  fill: rgba(17, 17, 17, 0.85);
+}
+
+.tolerance {
+  position: absolute;
+  left: 40px;
+  top: -6px;
+  translate: 0 -100%;
+  padding: 6px 10px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* white on teal: 4.9:1 */
+.tolerance.is-on {
+  opacity: 1;
+  background: var(--teal);
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .pipeline li {
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+
+  .check-card__title {
+    font-size: 16px;
+  }
+}

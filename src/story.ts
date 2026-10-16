@@ -148,6 +148,25 @@ export const BURST_AT = (() => {
   return r.start + (r.end - r.start) * BEATS.sparkle.burst[0]
 })()
 
+// ─── Checks + print (Scene 06) ──────────────────────────────────────────────
+
+export const printLocal = (p: number) => sceneLocal(p, 'print')
+
+/** Print progress 0 → 1 (layer by layer). */
+export function printProgress(p: number): number {
+  return beat(printLocal(p), BEATS.print.layers)
+}
+
+/** Finish beat: door opens, supports snap away, calipers measure. */
+export function printFinish(p: number): number {
+  return beat(printLocal(p), BEATS.print.finish)
+}
+
+/** The printer and its parts stay on the paper from the glide until the box leaves. */
+export function printerVisible(p: number): boolean {
+  return p > 0.54 && p < 0.72
+}
+
 // ─── Phone (DOM) ────────────────────────────────────────────────────────────
 
 /** Emre's phone on screen: 0 = hidden below/right, 1 = in place. */

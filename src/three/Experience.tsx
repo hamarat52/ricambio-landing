@@ -11,7 +11,9 @@ import { PALETTE } from '../content'
 import { scanSeam } from '../story'
 import { SCAN_KEYS } from './cameraPath'
 import { ScanStation } from './ScanStation'
-import { Sparkle } from './Sparkle'
+import { Sparkle, TORINO } from './Sparkle'
+import { Printer } from './Printer'
+import { printerVisible, printFinish, printProgress } from '../story'
 import { SplitView } from './SplitView'
 import { PaperFloor, paperColor } from './PaperFloor'
 
@@ -98,6 +100,15 @@ export default function Experience() {
       <MapDots />
       <Beacon />
       <Sparkle />
+      <Printer
+        variant="shop"
+        count={3}
+        position={[TORINO.x, 0, TORINO.z]}
+        progress={printProgress}
+        finish={printFinish}
+        visible={printerVisible}
+        anchor="shop"
+      />
       <Car />
       <SplitView seam={(p) => scanSeam(p, useStore.getState().mobile)} keys={SCAN_KEYS} background={PALETTE.inkDeep} environmentIntensity={0.18}>
         <ScanStation />

@@ -335,7 +335,7 @@ const en = {
       ['material', 'ASA 250 °C'],
       ['bed', '100 °C'],
     ],
-    orientation: 'orientation · flat side down',
+    orientation: 'orientation · upright, supports under the tab',
   },
   library: {
     headline: 'One part at a time, the library grows.',
@@ -521,7 +521,7 @@ const tr: Copy = {
       ['malzeme', 'ASA 250 °C'],
       ['tabla', '100 °C'],
     ],
-    orientation: 'yönlendirme · düz yüz altta',
+    orientation: 'yönlendirme · dik, tırnağın altı destekli',
   },
   library: {
     headline: 'Kütüphane parça parça büyüyor.',

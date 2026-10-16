@@ -64,11 +64,11 @@ export const DESKTOP_KEYS: CamKey[] = [
   { p: 0.485, pos: [14, 48, -30], target: [14, 0, 6], fov: 35, shift: [-0.1, 0], fit: 1, via: true },
   { p: 0.515, pos: [2, 18, -16], target: [0, 0, 0], fov: 35, shift: [-0.15, 0], fit: 1, hold: 0.007 },
   // 06 Checks + print — glide west over the map, descend to the printer in Torino
-  { p: 0.56, pos: [20, 30, -18], target: [24, 0, 6], fov: 35, shift: [0.1, 0], fit: 1, via: true, ease: 'expo' },
-  { p: 0.585, pos: [28.4, 4, 3.5], target: [28.6, 0.4, 7.7], fov: 34, fit: 0.8, via: true },
-  { p: 0.6, pos: [28.6, 0.55, 6.8], target: [28.6, 0.32, 7.7], fov: 32, fit: 0.5 },
-  { p: 0.63, pos: [28.6, 0.42, 7.25], target: [28.6, 0.24, 7.7], fov: 30, fit: 0.3 },
-  { p: 0.655, pos: [28.75, 0.36, 7.45], target: [28.6, 0.2, 7.7], fov: 30, fit: 0.3 },
+  { p: 0.548, pos: [20, 30, -18], target: [24, 0, 6], fov: 35, shift: [0.1, 0], fit: 1, via: true, ease: 'expo' },
+  { p: 0.57, pos: [28.4, 4, 3.5], target: [28.6, 0.4, 7.7], fov: 34, fit: 0.8, via: true },
+  { p: 0.583, pos: [28.62, 0.44, 6.5], target: [28.6, 0.27, 7.7], fov: 32, shift: [0.12, 0], fit: 0.5 },
+  { p: 0.606, pos: [28.64, 0.3, 7.1], target: [28.6, 0.17, 7.7], fov: 30, shift: [0.12, 0], fit: 0.3, hold: 0.02 },
+  { p: 0.642, pos: [28.5, 0.3, 7.18], target: [28.56, 0.165, 7.7], fov: 28, shift: [0.12, 0], fit: 0.3, hold: 0.018 },
   // 07 Ship
   { p: 0.675, pos: [29.0, 0.7, 6.8], target: [29.3, 0.1, 7.4], fov: 34, fit: 0.5 },
   { p: 0.705, pos: [16, 40, -24], target: [14, 0, 4], fov: 35, fit: 1, ease: 'expo' },
