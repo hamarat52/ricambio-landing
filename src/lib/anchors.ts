@@ -12,6 +12,9 @@ export interface AnchorPoint {
 
 export const anchors: Record<string, AnchorPoint> = {}
 
+/** Which constellation part the pointer is over (Scene 10), or -1. */
+export const libraryHover = { index: -1, named: -1 }
+
 export function getAnchor(name: string): AnchorPoint {
   return (anchors[name] ??= { x: 0, y: 0, visible: false })
 }

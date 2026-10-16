@@ -158,6 +158,8 @@ export function scanSeam(p: number, mobile: boolean): number {
   return seamWindow(p, r.start, open, sp.start, close, mobile)
 }
 
+export const homeLocal = (p: number) => sceneLocal(p, 'home')
+
 export function homeSeam(p: number, mobile: boolean): number {
   const r = sceneRange('home')
   const len = r.end - r.start

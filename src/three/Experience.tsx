@@ -1,22 +1,24 @@
 import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from '@react-three/drei'
 import { Canvas, useThree } from '@react-three/fiber'
 import { useEffect, useState } from 'react'
+import { PALETTE } from '../content'
 import { useStore } from '../store'
+import { homeSeam, printerVisible, printFinish, printProgress, scanSeam } from '../story'
+import { Atmosphere } from './Atmosphere'
+import { Beacon } from './Beacon'
 import { CameraRig } from './CameraRig'
 import { Car } from './Car'
-import { Beacon } from './Beacon'
+import { HOME_KEYS, SCAN_KEYS } from './cameraPath'
 import { Effects } from './Effects'
+import { HOME_BG, HomeStation } from './HomeStation'
 import { MapDots } from './MapDots'
-import { PALETTE } from '../content'
-import { scanSeam } from '../story'
-import { SCAN_KEYS } from './cameraPath'
-import { ScanStation } from './ScanStation'
-import { Sparkle, TORINO } from './Sparkle'
-import { Printer } from './Printer'
-import { ShipBox } from './ShipBox'
-import { printerVisible, printFinish, printProgress } from '../story'
-import { SplitView } from './SplitView'
 import { PaperFloor, paperColor } from './PaperFloor'
+import { PartsLibrary } from './PartsLibrary'
+import { Printer } from './Printer'
+import { ScanStation } from './ScanStation'
+import { ShipBox } from './ShipBox'
+import { Sparkle, TORINO } from './Sparkle'
+import { SplitView } from './SplitView'
 
 /** Studio lighting built from light formers — nothing is downloaded. */
 function Lights() {
@@ -30,9 +32,8 @@ function Lights() {
         <Lightformer form="rect" intensity={1.2} position={[1, 1.2, -8]} scale={[10, 0.6, 1]} target={[0, 0.5, 0]} />
         <Lightformer form="ring" intensity={1.6} position={[-2, 4, 6]} scale={2.5} target={[0, 0, 0]} />
       </Environment>
-      {/* key light from the top-left of the hero framing */}
-      <directionalLight position={[5, 7, 2.5]} intensity={1.5} color="#fff4e8" />
-      <hemisphereLight args={['#ffffff', '#b9c1ca', 0.55]} />
+      {/* key light from the top-left of the hero framing, warming at the finale */}
+      <Atmosphere />
     </>
   )
 }
@@ -116,6 +117,10 @@ export default function Experience() {
       <SplitView seam={(p) => scanSeam(p, useStore.getState().mobile)} keys={SCAN_KEYS} background={PALETTE.inkDeep} environmentIntensity={0.18}>
         <ScanStation />
       </SplitView>
+      <SplitView seam={(p) => homeSeam(p, useStore.getState().mobile)} keys={HOME_KEYS} background={HOME_BG} environmentIntensity={0.6}>
+        <HomeStation />
+      </SplitView>
+      <PartsLibrary />
       <ContactShadows position={[0, 0.002, 0]} scale={9} resolution={512} blur={2.6} far={1.1} opacity={0.5} color="#111111" />
       <Effects />
       <ReadySignal />

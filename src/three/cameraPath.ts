@@ -97,6 +97,14 @@ export const SCAN_KEYS: CamKey[] = [
   { p: 0.45, pos: [0.06, 0.2, 0.8], target: [0.0, 0.035, 0], fov: 30, ease: 'soft' },
 ]
 
+/** Ankara (Selin's printer at the origin of its own scene); metres. */
+export const HOME_KEYS: CamKey[] = [
+  { p: 0.815, pos: [1.1, 0.8, -1.9], target: [0, 0.24, 0], fov: 32 },
+  { p: 0.84, pos: [0.65, 0.58, -1.45], target: [0, 0.22, 0], fov: 32, hold: 0.002 },
+  { p: 0.862, pos: [0.28, 0.36, -0.88], target: [0, 0.15, 0], fov: 30, hold: 0.004 },
+  { p: 0.875, pos: [0.5, 0.48, -1.2], target: [0, 0.18, 0], fov: 32 },
+]
+
 /**
  * Mobile variant: same stops, wider lens, subject lifted into the upper part
  * of a portrait screen (the phone UI and copy sit below it).
