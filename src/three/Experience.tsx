@@ -7,6 +7,11 @@ import { Car } from './Car'
 import { Beacon } from './Beacon'
 import { Effects } from './Effects'
 import { MapDots } from './MapDots'
+import { PALETTE } from '../content'
+import { scanSeam } from '../story'
+import { SCAN_KEYS } from './cameraPath'
+import { ScanStation } from './ScanStation'
+import { SplitView } from './SplitView'
 import { PaperFloor, paperColor } from './PaperFloor'
 
 /** Studio lighting built from light formers — nothing is downloaded. */
@@ -92,6 +97,9 @@ export default function Experience() {
       <MapDots />
       <Beacon />
       <Car />
+      <SplitView seam={(p) => scanSeam(p, useStore.getState().mobile)} keys={SCAN_KEYS} background={PALETTE.inkDeep} environmentIntensity={0.18}>
+        <ScanStation />
+      </SplitView>
       <ContactShadows position={[0, 0.002, 0]} scale={9} resolution={512} blur={2.6} far={1.1} opacity={0.5} color="#111111" />
       <Effects />
       <ReadySignal />

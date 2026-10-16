@@ -58,8 +58,8 @@ export const DESKTOP_KEYS: CamKey[] = [
   { p: 0.215, pos: [4, 12, -16], target: [2, 0, 1], fov: 34, shift: [-0.16, 0], fit: 1, via: true },
   { p: 0.258, pos: [6, 30, -28], target: [8, 0, 4], fov: 35, shift: [-0.15, 0], fit: 1, hold: 0.008 },
   { p: 0.29, pos: [15, 62, -36], target: [15, 0, 12], fov: 35, shift: [-0.12, 0], fit: 1, hold: 0.01 },
-  // 04 Scan — split screen; the main camera drifts gently over Istanbul
-  { p: 0.45, pos: [11, 56, -34], target: [12, 0, 10], fov: 35, shift: [-0.1, 0], fit: 1, ease: 'soft' },
+  // 04 Scan — split screen; the main camera frames Istanbul in the left half
+  { p: 0.314, pos: [3, 30, -24], target: [2, 0, 3], fov: 35, shift: [-0.25, 0], fit: 1, hold: 0.13 },
   // 05 Sparkle — follow the arc to Istanbul
   { p: 0.485, pos: [14, 48, -30], target: [14, 0, 6], fov: 35, shift: [-0.1, 0], fit: 1, via: true },
   { p: 0.515, pos: [2, 18, -16], target: [0, 0, 0], fov: 35, shift: [-0.15, 0], fit: 1, hold: 0.007 },
@@ -82,6 +82,19 @@ export const DESKTOP_KEYS: CamKey[] = [
   { p: 0.95, pos: [11, 5.5, -9], target: [0, 1.1, 0], fov: 38, shift: [0.18, 0.04], fit: 1, ease: 'soft' },
   // 11 CTA — parked, golden hour
   { p: 1.0, pos: [6.0, 1.35, -5.2], target: [0, 0.6, 0], fov: 30, shift: [0.14, -0.1], fit: 1 },
+]
+
+/**
+ * Torino scan station (its own scene, rendered right of the seam). The part
+ * stands on a turntable at the origin; metres.
+ */
+export const SCAN_KEYS: CamKey[] = [
+  { p: 0.3, pos: [0.42, 0.3, 0.66], target: [0, 0.035, 0], fov: 30 },
+  { p: 0.33, pos: [0.22, 0.15, 0.42], target: [0, 0.03, 0], fov: 30, hold: 0.004 },
+  { p: 0.37, pos: [-0.14, 0.13, 0.4], target: [0, 0.03, 0], fov: 30 },
+  { p: 0.385, pos: [-0.012, 0.036, 0.56], target: [-0.012, 0.03, 0], fov: 27, hold: 0.02 },
+  { p: 0.418, pos: [0.06, 0.14, 0.78], target: [0.04, 0.035, 0], fov: 30 },
+  { p: 0.45, pos: [0.06, 0.2, 0.8], target: [0.0, 0.035, 0], fov: 30, ease: 'soft' },
 ]
 
 /**

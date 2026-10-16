@@ -92,6 +92,35 @@ export function istanbulPulse(p: number): number {
   return landed * (1 - remap(p, 0.505, 0.52))
 }
 
+// ─── Split screens (Scenes 04 and 09) ───────────────────────────────────────
+
+/**
+ * Seam position: 1 = closed, 0.5 = half (desktop), 0 = full screen. On mobile
+ * the split becomes sequential: the seam sweeps all the way across.
+ */
+function seamWindow(p: number, a: number, b: number, c: number, d: number, mobile: boolean): number {
+  const k = window4(p, a, b, c, d)
+  const target = mobile ? 0 : 0.5
+  return 1 - (1 - target) * k
+}
+
+export const scanLocal = (p: number) => sceneLocal(p, 'scan')
+
+export function scanSeam(p: number, mobile: boolean): number {
+  const r = sceneRange('scan')
+  const len = r.end - r.start
+  const open = r.start + len * BEATS.scan.seam[1]
+  const sp = sceneRange('sparkle')
+  const close = sp.start + (sp.end - sp.start) * BEATS.sparkle.seamClose[1]
+  return seamWindow(p, r.start, open, sp.start, close, mobile)
+}
+
+export function homeSeam(p: number, mobile: boolean): number {
+  const r = sceneRange('home')
+  const len = r.end - r.start
+  return seamWindow(p, r.start, r.start + len * BEATS.home.seam[1], r.end - len * 0.12, r.end, mobile)
+}
+
 // ─── Phone (DOM) ────────────────────────────────────────────────────────────
 
 /** Emre's phone on screen: 0 = hidden below/right, 1 = in place. */
