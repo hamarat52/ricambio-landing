@@ -42,9 +42,29 @@ export interface VentState {
   fall: number
   /** Louvre droop 0 → 1 (with a small damped settle). */
   droop: number
+  /** Scene 08: the new clip's approach 0 → 1 (1 = seated). */
+  insert: number
+  newClip: boolean
+  /** Shockwave ring at the click, 0 → 1. */
+  shock: number
+  /** Cassette yaw while air flows (radians). */
+  sweep: number
+  /** Air particles strength 0 → 1. */
+  air: number
 }
 
-const out: VentState = { crack: 0, broken: false, flash: 0, fall: 0, droop: 0 }
+const out: VentState = { crack: 0, broken: false, flash: 0, fall: 0, droop: 0, insert: 0, newClip: false, shock: 0, sweep: 0, air: 0 }
+
+export const clickLocal = (p: number) => sceneLocal(p, 'click')
+const CB = BEATS.click
+/** Local click-scene time at which the new clip seats ("click"). */
+export const CONTACT_T = CB.insert[0] + (CB.insert[1] - CB.insert[0]) * 0.7
+
+/** Global progress of the click (for the one-shot sound). */
+export const CLICK_AT = (() => {
+  const r = sceneRange('click')
+  return r.start + (r.end - r.start) * CONTACT_T
+})()
 
 /** Damped settle curve: 0 → 1 with one small overshoot (physical, not bouncy). */
 export function settle(s: number): number {
@@ -61,9 +81,32 @@ export function ventState(p: number): VentState {
   const f = beat(t, b.snap)
   out.flash = f > 0 && f < 1 ? Math.sin(Math.PI * Math.min(1, f * 1.6)) * (1 - f) * 1.8 : 0
   out.fall = beat(t, b.fall)
-  out.droop = settle(beat(t, b.droop))
-  // Scene 08 (the new clip) extends this in build step 7.
+
+  // Scene 08: the new clip is guided in, clicks, the louvres spring back and sweep once.
+  const ct = clickLocal(p)
+  out.newClip = ct > CB.descend[1] * 0.6
+  out.insert = beat(ct, [CB.insert[0], CONTACT_T], power2InOut)
+  out.shock = beat(ct, [CONTACT_T, CONTACT_T + 0.07])
+  const springBack = settle(beat(ct, [CONTACT_T, CONTACT_T + 0.09]))
+  out.droop = settle(beat(t, b.droop)) * (1 - springBack)
+  const sw = beat(ct, CB.airflow)
+  out.sweep = Math.sin(sw * Math.PI * 2) * 0.32 * (sw > 0 && sw < 1 ? 1 : 0)
+  out.air = Math.min(beat(ct, [CB.airflow[0], CB.airflow[0] + 0.04]), 1 - beat(ct, [0.96, 1]))
   return out
+}
+
+// ─── Ship (Scene 07) ────────────────────────────────────────────────────────
+
+export const shipLocal = (p: number) => sceneLocal(p, 'ship')
+
+/** Packing 0 → 1: clips drop in, QR card, lid, tape, label. */
+export function packT(p: number): number {
+  return beat(shipLocal(p), BEATS.ship.pack)
+}
+
+/** The box's trip Torino → Istanbul along the map arc, 0 → 1. */
+export function travelT(p: number): number {
+  return beat(shipLocal(p), BEATS.ship.travel, power2InOut)
 }
 
 // ─── Map (Scenes 02–07) ─────────────────────────────────────────────────────
@@ -174,7 +217,7 @@ export function phoneIn(p: number): number {
   const windows: [number, number, number, number][] = [
     [0.146, 0.162, 0.266, 0.278], // search → request (leaves once the beacon is away)
     [0.462, 0.474, 0.5195, 0.526], // the part page, until "Order a print" is tapped
-    [0.776, 0.786, 0.808, 0.815], // the fit-check form
+    [0.783, 0.79, 0.811, 0.817], // the QR scan and fit-check form
   ]
   let v = 0
   for (const [a, b, c, d] of windows) v = Math.max(v, window4(p, a, b, c, d))

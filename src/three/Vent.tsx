@@ -1,25 +1,36 @@
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import {
+  AdditiveBlending,
+  BufferAttribute,
   BufferGeometry,
+  Color,
   ExtrudeGeometry,
   Group,
   Line,
   Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
   PlaneGeometry,
+  Points,
   Quaternion,
+  RingGeometry,
+  ShaderMaterial,
   Shape,
   Vector3,
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
+import { PALETTE } from '../content'
 import { power2Out } from '../lib/easing'
-import { clamp01, lerp } from '../lib/remap'
-import { playCrack } from '../lib/sound'
+import { clamp01, hash01, lerp } from '../lib/remap'
+import { playClick, playCrack } from '../lib/sound'
 import { useStore } from '../store'
 import { clipGeometries } from './clipGeometry'
 import { materials } from './materials'
 import { ScreenAnchor } from './ScreenAnchor'
-import { SNAP_AT, ventState } from '../story'
+import { CLICK_AT, SNAP_AT, ventState } from '../story'
+
+const AIR = 70
 
 /**
  * The central dashboard vent and its mounting clip — the part that snaps in
@@ -162,8 +173,46 @@ export function Vent() {
   }, [clip])
 
   const tmp = useMemo(() => ({ v: new Vector3(), q: new Quaternion(), qp: new Quaternion() }), [])
+  const newClip = useRef<Group>(null)
+  const shock = useRef<Mesh>(null)
+  const lastP2 = useRef(0)
+  const newMat = useMemo(() => new MeshStandardMaterial({ color: '#4c5259', roughness: 0.58 }), [])
+  const shockGeo = useMemo(() => new RingGeometry(0.85, 1, 48), [])
+  const shockMat = useMemo(
+    () =>
+      new MeshBasicMaterial({
+        color: new Color(PALETTE.teal).multiplyScalar(3),
+        transparent: true,
+        blending: AdditiveBlending,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    [],
+  )
+  const air = useMemo(() => {
+    const geo = new BufferGeometry()
+    geo.setAttribute('position', new BufferAttribute(new Float32Array(AIR * 3), 3))
+    geo.setAttribute('aAlpha', new BufferAttribute(new Float32Array(AIR), 1))
+    const mat = new ShaderMaterial({
+      uniforms: { uColor: { value: new Color(1.4, 1.5, 1.6) } },
+      vertexShader: /* glsl */ `
+        attribute float aAlpha; varying float vA;
+        void main() { vA = aAlpha; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = 9.0 / -mv.z; }`,
+      fragmentShader: /* glsl */ `
+        uniform vec3 uColor; varying float vA;
+        void main() { float d = length(gl_PointCoord - 0.5) * 2.0; float a = pow(max(0.0, 1.0 - d), 2.0) * vA; if (a < 0.01) discard; gl_FragColor = vec4(uColor, a); }`,
+      transparent: true,
+      depthWrite: false,
+      blending: AdditiveBlending,
+      toneMapped: false,
+    })
+    const pts = new Points(geo, mat)
+    pts.frustumCulled = false
+    pts.visible = false
+    return pts
+  }, [])
 
-  useFrame(({ camera }) => {
+  useFrame(({ camera, clock }) => {
     const { progress: p, sound } = useStore.getState()
     const s = ventState(p)
 
@@ -205,11 +254,52 @@ export function Vent() {
       }
     }
 
-    // Louvres droop once the clip is gone.
-    if (cassette.current) cassette.current.rotation.z = 0.16 * s.droop
+    // Louvres droop once the clip is gone; spring back and sweep once when the new one clicks.
+    if (cassette.current) {
+      cassette.current.rotation.z = 0.16 * s.droop
+      cassette.current.rotation.y = s.sweep
+    }
     louvres.current.forEach((l, i) => {
       if (l) l.rotation.x = 0.55 * s.droop * (1 + i * 0.12)
     })
+
+    // Scene 08: the new clip is guided into the same slot.
+    if (sound && lastP2.current < CLICK_AT && p >= CLICK_AT && p - lastP2.current < 0.03) playClick()
+    lastP2.current = p
+    if (newClip.current) {
+      newClip.current.visible = s.newClip
+      const k = s.insert
+      newClip.current.position.set(CLIP_POS[0] - (1 - k) * 0.03, CLIP_POS[1] - (1 - k) * 0.05, CLIP_POS[2] + (1 - k) * 0.16)
+      newClip.current.rotation.set((1 - k) * 0.5, (1 - k) * -0.4, (1 - k) * 0.3)
+    }
+    // Pieces of the old clip stay under the seat; hide them once we're back for the new one.
+    if (s.newClip) {
+      if (pieceA.current) pieceA.current.visible = false
+      if (pieceB.current) pieceB.current.visible = false
+    }
+    if (shock.current) {
+      const sh = s.shock
+      shock.current.visible = sh > 0 && sh < 1
+      shock.current.scale.setScalar(0.02 + power2Out(sh) * 0.12)
+      ;(shock.current.material as MeshBasicMaterial).opacity = (1 - sh) * (1 - sh)
+    }
+
+    // Air drifting out of the vent (stateless loop, gated by progress)
+    const airPos = air.geometry.getAttribute('position') as BufferAttribute
+    const airA = air.geometry.getAttribute('aAlpha') as BufferAttribute
+    air.visible = s.air > 0.01
+    if (air.visible) {
+      const tt = clock.elapsedTime
+      for (let i = 0; i < AIR; i++) {
+        const ph = (tt * 0.5 + hash01(i * 2.3)) % 1
+        const sx = (hash01(i * 5.1) - 0.5) * 0.19
+        const sy = (hash01(i * 7.7) - 0.5) * 0.05
+        airPos.setXYZ(i, sx * (1 + ph * 1.6), sy * (1 + ph * 2) + ph * 0.02, 0.02 + ph * 0.34)
+        airA.setX(i, s.air * Math.sin(Math.PI * ph) * 0.5)
+      }
+      airPos.needsUpdate = true
+      airA.needsUpdate = true
+    }
   })
 
   const crackPos = useMemo<V3>(() => [CLIP_POS[0] + 2.6 * CLIP_SCALE, CLIP_POS[1] + 4 * CLIP_SCALE, CLIP_POS[2] + 0.02], [])
@@ -251,6 +341,14 @@ export function Vent() {
       </group>
 
       <mesh ref={flash} geometry={g.flash} material={m.flash} position={crackPos} visible={false} renderOrder={10} />
+
+      {/* The new clip (printed in ASA) and the click */}
+      <group ref={newClip} visible={false}>
+        <mesh geometry={clip.intact} material={newMat} scale={CLIP_SCALE} />
+        <ScreenAnchor name="vent-newclip" position={[0, 0, 0.02]} />
+      </group>
+      <mesh ref={shock} geometry={shockGeo} material={shockMat} position={[CLIP_POS[0], CLIP_POS[1], CLIP_POS[2] + 0.02]} visible={false} renderOrder={11} />
+      <primitive object={air} />
     </group>
   )
 }

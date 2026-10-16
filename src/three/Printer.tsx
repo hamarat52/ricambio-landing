@@ -58,6 +58,8 @@ interface Props {
   /** Finish 0 → 1 (door, supports, measuring). */
   finish?: (p: number) => number
   visible: (p: number) => boolean
+  /** Hide the printed parts from this progress on (they move into the box). */
+  partsUntil?: number
   anchor: string
 }
 
@@ -66,7 +68,7 @@ interface Props {
  * interior light); 'home' is an open frame. The parts grow layer by layer
  * (layer-print shader) under a nozzle with a glowing hot end.
  */
-export function Printer({ variant, count, position, progress, finish, visible, anchor }: Props) {
+export function Printer({ variant, count, position, progress, finish, visible, partsUntil = 2, anchor }: Props) {
   const shop = variant === 'shop'
   const W = shop ? 0.5 : 0.46
   const H = shop ? 0.56 : 0.5
@@ -127,6 +129,7 @@ export function Printer({ variant, count, position, progress, finish, visible, a
   const nozzleLight = useRef<PointLight>(null)
   const interior = useRef<PointLight>(null)
   const supports = useRef<(Mesh | null)[]>([])
+  const parts = useRef<(Group | null)[]>([])
 
   const pathLine = useMemo(() => {
     const g = new BufferGeometry()
@@ -143,6 +146,9 @@ export function Printer({ variant, count, position, progress, finish, visible, a
 
     const k = progress(p)
     const f = finish ? finish(p) : 0
+    parts.current.forEach((pg) => {
+      if (pg) pg.visible = p < partsUntil
+    })
     const h = PRINT_H * k
     const u = mats.part.uniforms
     u.uHeight.value = bedY + 0.006 + h + (k >= 1 ? 1 : 0)
@@ -243,7 +249,15 @@ export function Printer({ variant, count, position, progress, finish, visible, a
 
       {/* the parts, upright with the C-face toward the door */}
       {xs.map((x, i) => (
-        <group key={x} position={[x, clipY, 0]} rotation={[0, Math.PI, 0]} scale={S}>
+        <group
+          key={x}
+          ref={(el) => {
+            parts.current[i] = el
+          }}
+          position={[x, clipY, 0]}
+          rotation={[0, Math.PI, 0]}
+          scale={S}
+        >
           <mesh geometry={clip.intact} material={mats.part.material} />
           <mesh
             ref={(el) => {

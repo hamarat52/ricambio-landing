@@ -20,7 +20,7 @@ import { Footer } from './ui/Footer'
 import { Header } from './ui/Header'
 import { Loader } from './ui/Loader'
 import { Phone } from './ui/Phone'
-import { AppScreen, PartScreen, SearchScreen } from './ui/PhoneScreen'
+import { AppScreen, FitScreen, PartScreen, SearchScreen } from './ui/PhoneScreen'
 
 // three.js and the whole 3D scene load after the hero text has painted.
 const Experience = lazy(() => import('./three/Experience'))
@@ -147,6 +147,7 @@ export default function App() {
             <SearchScreen />
             <AppScreen />
             <PartScreen />
+            <FitScreen />
           </Phone>
         </div>
 

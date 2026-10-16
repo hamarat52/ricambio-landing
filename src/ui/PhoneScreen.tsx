@@ -226,6 +226,82 @@ export function PartScreen() {
   )
 }
 
+/** Scene 08: scan the QR card → the fit-check form (dark card) → "Fits". */
+export function FitScreen() {
+  const c = useCopy()
+  const root = useRef<HTMLDivElement>(null)
+  const scan = useRef<HTMLDivElement>(null)
+  const line = useRef<HTMLSpanElement>(null)
+  const form = useRef<HTMLDivElement>(null)
+  const fits = useRef<HTMLDivElement>(null)
+  const note = useRef<HTMLParagraphElement>(null)
+
+  useProgressEffect((p) => {
+    const el = root.current
+    if (!el) return
+    const r = sceneRange('click')
+    const on = screenOn(p, r.start + (r.end - r.start) * 0.6, r.end + 0.004)
+    el.style.opacity = on.toFixed(3)
+    el.style.visibility = on > 0 ? 'visible' : 'hidden'
+    if (on <= 0) return
+    const reduced = useStore.getState().reducedMotion
+    const t = reduced && p >= r.start && p <= r.end ? 0.95 : remap(p, r.start, r.end)
+    const b = BEATS.click
+    const scanK = beat(t, [b.form[0], b.form[0] + 0.06])
+    const formK = power3Out(beat(t, [b.form[0] + 0.06, b.form[0] + 0.1]))
+    if (scan.current) scan.current.style.opacity = (1 - formK).toFixed(3)
+    if (line.current) line.current.style.transform = `translateY(${(scanK * 100).toFixed(1)}%)`
+    if (form.current) form.current.style.transform = `translate3d(0, ${((1 - formK) * 104).toFixed(1)}%, 0)`
+    const tapAt = b.form[0] + 0.13
+    if (fits.current) fits.current.classList.toggle('is-chosen', t >= tapAt)
+    if (note.current) note.current.style.opacity = power2Out(beat(t, [tapAt, tapAt + 0.03])).toFixed(3)
+
+    const phone = el.closest<HTMLElement>('.phone')
+    if (phone && fits.current && useStore.getState().scene === 'click') {
+      const o = offsetIn(fits.current, phone)
+      thumb.x = o.x + o.w * 0.7
+      thumb.y = o.y + o.h * 0.5 + (1 - power2InOut(beat(t, [b.form[0] + 0.09, tapAt]))) * phone.offsetHeight * 0.16
+      thumb.press = Math.abs(t - tapAt) < 0.012 ? 1 : 0
+      thumb.on = beat(t, [b.form[0] + 0.09, b.form[0] + 0.11]) * (1 - beat(t, [tapAt + 0.03, tapAt + 0.06]))
+    }
+  })
+
+  return (
+    <div className="screen screen--fit" ref={root}>
+      <div className="qr-view" ref={scan} aria-hidden="true">
+        <div className="qr-view__frame">
+          <svg viewBox="0 0 21 21">
+            <path d="M0 0h7v7H0z M14 0h7v7h-7z M0 14h7v7H0z M9 2h2v2H9z M11 6h2v3h-2z M8 10h3v2H8z M14 9h2v2h-2z M17 12h3v2h-3z M10 15h2v4h-2z M14 15h3v2h-3z M18 17h2v3h-2z" />
+          </svg>
+          <span className="qr-view__line" ref={line} />
+        </div>
+        <span className="mono qr-view__label">{c.click.scanning}</span>
+      </div>
+      <div className="fit-form" ref={form}>
+        <StatusBar />
+        <p className="fit-form__title">{c.click.formTitle}</p>
+        <div className="fit-form__options">
+          <div className="fit-opt fit-opt--fits" ref={fits}>
+            <span className="fit-opt__dot" aria-hidden="true" />
+            {c.click.options[0]}
+          </div>
+          <div className="fit-opt">
+            <span className="fit-opt__dot" aria-hidden="true" />
+            {c.click.options[1]}
+          </div>
+          <div className="fit-opt">
+            <span className="fit-opt__dot" aria-hidden="true" />
+            {c.click.options[2]}
+          </div>
+        </div>
+        <p className="fit-form__note mono" ref={note}>
+          {c.click.formNote}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 /** Scene 03: selector chips click in, empty state, "Request this part". */
 export function AppScreen() {
   const c = useCopy()

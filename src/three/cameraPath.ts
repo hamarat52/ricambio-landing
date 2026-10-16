@@ -69,14 +69,14 @@ export const DESKTOP_KEYS: CamKey[] = [
   { p: 0.583, pos: [28.62, 0.44, 6.5], target: [28.6, 0.27, 7.7], fov: 32, shift: [0.12, 0], fit: 0.5 },
   { p: 0.606, pos: [28.64, 0.3, 7.1], target: [28.6, 0.17, 7.7], fov: 30, shift: [0.12, 0], fit: 0.3, hold: 0.02 },
   { p: 0.642, pos: [28.5, 0.3, 7.18], target: [28.56, 0.165, 7.7], fov: 28, shift: [0.12, 0], fit: 0.3, hold: 0.018 },
-  // 07 Ship
-  { p: 0.675, pos: [29.0, 0.7, 6.8], target: [29.3, 0.1, 7.4], fov: 34, fit: 0.5 },
-  { p: 0.705, pos: [16, 40, -24], target: [14, 0, 4], fov: 35, fit: 1, ease: 'expo' },
+  // 07 Ship — the kraft box beside the printer, then back up over the map
+  { p: 0.668, pos: [29.02, 0.6, 6.88], target: [29.25, 0.07, 7.45], fov: 34, shift: [0.12, 0], fit: 0.5, hold: 0.027 },
+  { p: 0.708, pos: [16, 40, -24], target: [14, 0, 4], fov: 35, fit: 1, ease: 'expo' },
   // 08 Click — back into the cabin: the same framings as the snap
   { p: 0.738, pos: [2.4, 4.5, -6], target: [0.3, 0.8, 0], fov: 34, fit: 0.8, via: true },
-  { p: 0.752, ...R, hold: 0.006 },
-  { p: 0.768, ...CLOSE, hold: 0.014 },
-  { p: 0.795, ...R, hold: 0.08 }, // also the left half during the Ankara split
+  { p: 0.752, ...R, hold: 0.004 },
+  { p: 0.766, ...CLOSE, hold: 0.017 },
+  { p: 0.792, ...R, hold: 0.083 }, // also the left half during the Ankara split
   // 10 Library — pull far back
   { p: 0.905, pos: [9.5, 4.8, -11.5], target: [0, 1.0, 0], fov: 38, shift: [0.18, 0.04], fit: 1 },
   { p: 0.95, pos: [11, 5.5, -9], target: [0, 1.1, 0], fov: 38, shift: [0.18, 0.04], fit: 1, ease: 'soft' },

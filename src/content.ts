@@ -103,7 +103,7 @@ export const BEATS = {
   sparkle: { seamClose: [0, 0.15], arc: [0.15, 0.45], burst: [0.45, 0.6], page: [0.6, 0.85], tap: [0.85, 1] },
   print: { checks: [0, 0.25], glide: [0.25, 0.4], layers: [0.4, 0.8], finish: [0.8, 1] },
   ship: { pack: [0, 0.55], travel: [0.55, 1] },
-  click: { descend: [0, 0.2], insert: [0.2, 0.4], airflow: [0.4, 0.55], form: [0.55, 0.8], network: [0.8, 1] },
+  click: { descend: [0, 0.25], insert: [0.48, 0.62], airflow: [0.62, 0.72], form: [0.7, 0.88], network: [0.88, 1] },
   home: { seam: [0, 0.15], download: [0.15, 0.45], print: [0.45, 0.8], fits: [0.8, 1] },
   library: { pullBack: [0, 0.35], sources: [0.35, 0.6], never: [0.6, 0.8], counters: [0.8, 1] },
   cta: { flyBack: [0, 0.5], golden: [0.5, 1] },

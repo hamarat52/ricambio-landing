@@ -13,6 +13,7 @@ import { SCAN_KEYS } from './cameraPath'
 import { ScanStation } from './ScanStation'
 import { Sparkle, TORINO } from './Sparkle'
 import { Printer } from './Printer'
+import { ShipBox } from './ShipBox'
 import { printerVisible, printFinish, printProgress } from '../story'
 import { SplitView } from './SplitView'
 import { PaperFloor, paperColor } from './PaperFloor'
@@ -107,8 +108,10 @@ export default function Experience() {
         progress={printProgress}
         finish={printFinish}
         visible={printerVisible}
+        partsUntil={0.6605}
         anchor="shop"
       />
+      <ShipBox />
       <Car />
       <SplitView seam={(p) => scanSeam(p, useStore.getState().mobile)} keys={SCAN_KEYS} background={PALETTE.inkDeep} environmentIntensity={0.18}>
         <ScanStation />

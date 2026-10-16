@@ -709,3 +709,239 @@
 .sparkle__card {
   max-width: min(32rem, calc(100vw - 2 * var(--gutter)));
 }
+
+/* ─── Fit check (Scene 08) ───────────────────────────────────────────────── */
+.screen--fit {
+  padding: 0;
+  background: #101316;
+}
+
+.qr-view {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5cqw;
+  background: radial-gradient(90% 70% at 50% 45%, #2d3238 0%, #101316 75%);
+  color: #e9edf1;
+}
+
+.qr-view__frame {
+  position: relative;
+  width: 52cqw;
+  aspect-ratio: 1;
+  padding: 6cqw;
+  border-radius: 4cqw;
+  background: #f3f5f7;
+  overflow: hidden;
+  box-shadow: 0 0 0 1.5cqw rgba(143, 211, 223, 0.6);
+}
+
+.qr-view__frame svg {
+  width: 100%;
+  fill: #111;
+}
+
+.qr-view__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3%;
+  background: rgba(43, 122, 140, 0.85);
+  box-shadow: 0 0 4cqw 1cqw rgba(143, 211, 223, 0.7);
+}
+
+.qr-view__label {
+  font-size: 3.4cqw;
+}
+
+/* the dark fit-check card, as in the deck */
+.fit-form {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4cqw;
+  padding: 18cqw 6cqw 8cqw;
+  background: #14181d;
+  color: #e9edf1;
+  transform: translate3d(0, 104%, 0);
+}
+
+.fit-form .statusbar {
+  color: #e9edf1;
+}
+
+.fit-form .statusbar__icons i {
+  background: #e9edf1;
+}
+
+.fit-form .statusbar__icons b {
+  border-color: #e9edf1;
+}
+
+.fit-form__title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 8.2cqw;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.fit-form__options {
+  display: grid;
+  gap: 2.6cqw;
+}
+
+.fit-opt {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  padding: 3.6cqw 4cqw;
+  border-radius: 4cqw;
+  border: 1.5px solid rgba(233, 237, 241, 0.3);
+  font-weight: 800;
+  font-size: 4.6cqw;
+}
+
+.fit-opt__dot {
+  width: 4.4cqw;
+  height: 4.4cqw;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+/* chosen: white on teal (4.9:1) */
+.fit-opt.is-chosen {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+
+.fit-opt.is-chosen .fit-opt__dot {
+  background: #fff;
+  box-shadow: inset 0 0 0 1cqw var(--teal);
+}
+
+.fit-form__note {
+  margin: auto 0 0;
+  font-size: 3.4cqw;
+  line-height: 1.5;
+  color: #d1d7de;
+  opacity: 0;
+}
+
+/* ─── Ship + click asides ────────────────────────────────────────────────── */
+.ship__days {
+  position: absolute;
+  right: var(--gutter);
+  top: calc(var(--header-h) + 20px);
+  text-align: right;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background: var(--paper);
+  box-shadow: 0 14px 30px -20px rgba(17, 17, 17, 0.6);
+}
+
+.hand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(130px, 13vw, 200px);
+  margin: -12px 0 0 -6px;
+  visibility: hidden;
+}
+
+.hand svg {
+  width: 100%;
+  overflow: visible;
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.click__head {
+  max-width: min(32rem, calc(100vw - 2 * var(--gutter)));
+}
+
+.click__head .display {
+  font-size: clamp(1.9rem, 4.2vw, 4rem);
+}
+
+.rank-card {
+  bottom: auto;
+  top: calc(var(--header-h) + 24px);
+  justify-items: stretch;
+  width: min(22rem, 34vw);
+  padding: 14px;
+  border-radius: 6px;
+  background: var(--paper);
+  text-align: left;
+  box-shadow: 0 20px 44px -26px rgba(17, 17, 17, 0.7);
+}
+
+.rank {
+  display: grid;
+  gap: 8px;
+}
+
+.rank .mono-label {
+  font-size: 11px;
+}
+
+.rank__list {
+  position: relative;
+  height: calc(3 * 40px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rank__row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 40px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 0 8px;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+  font-size: 13px;
+}
+
+.rank__row--ours {
+  z-index: 1;
+  background: #e3e7eb;
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.rank__n {
+  font-weight: 700;
+}
+
+.rank__count {
+  color: #1f5f6e;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .rank-card {
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+  }
+}
+
+/* the badge outside the phone (no container units there) */
+.rank-card .badge {
+  justify-self: start;
+  padding: 6px 10px;
+  font-size: 12px;
+}
