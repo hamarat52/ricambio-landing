@@ -1,10 +1,11 @@
 import { useFBO } from '@react-three/drei'
 import { createPortal, useFrame, useThree } from '@react-three/fiber'
-import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react'
 import { Color, HalfFloatType, type Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Vector2 } from 'three'
 import { neutralPreimage } from '../lib/color'
 import { storyProgress } from '../store'
 import { CameraPath, type CamKey, createSample } from './cameraPath'
+import { compileForComposer } from './compile'
 
 /** Layer the split overlay lives on (the contact-shadow camera never sees it). */
 export const OVERLAY_LAYER = 1
@@ -86,6 +87,12 @@ export function SplitView({ seam, keys, background, environmentIntensity = 0.3, 
     quad.current?.layers.set(OVERLAY_LAYER)
     mainCamera.layers.enable(OVERLAY_LAYER)
   }, [mainCamera])
+
+  // pre-compile the portal's materials so the seam opens without a hitch
+  useEffect(() => {
+    const id = setTimeout(() => compileForComposer(gl, portal, cam).catch(() => {}), 50)
+    return () => clearTimeout(id)
+  }, [gl, portal, cam])
 
   // Priority 0.5: after the portal's own useFrame callbacks (0), before the composer (1).
   useFrame(() => {

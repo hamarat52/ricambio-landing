@@ -68,12 +68,12 @@ function paint(clipping: Plane[], clipIntersection: boolean) {
 let cache: ReturnType<typeof build> | null = null
 
 function build() {
-  const glass = new MeshPhysicalMaterial({
+  // standard (not physical) keeps the hero's shader compile light; env reflections still read as glass
+  const glass = new MeshStandardMaterial({
     color: '#12171c',
     roughness: 0.04,
-    metalness: 0.2,
-    clearcoat: 1,
-    clearcoatRoughness: 0.03,
+    metalness: 0.6,
+    envMapIntensity: 1.6,
     transparent: true,
     opacity: 0.84,
     depthWrite: false,
@@ -99,21 +99,8 @@ function build() {
     tire: new MeshStandardMaterial({ color: '#18191b', roughness: 0.88 }),
     rim: new MeshStandardMaterial({ color: '#a9b0b7', roughness: 0.32, metalness: 0.85 }),
     rimDark: new MeshStandardMaterial({ color: '#2b2f33', roughness: 0.5, metalness: 0.6 }),
-    headlight: new MeshPhysicalMaterial({
-      color: '#dfe5ea',
-      roughness: 0.1,
-      metalness: 0.2,
-      clearcoat: 1,
-      emissive: '#fff4e0',
-      emissiveIntensity: 0.15,
-    }),
-    taillight: new MeshPhysicalMaterial({
-      color: '#5e0c10',
-      roughness: 0.15,
-      clearcoat: 1,
-      emissive: '#8c1016',
-      emissiveIntensity: 0.35,
-    }),
+    headlight: new MeshStandardMaterial({ color: '#dfe5ea', roughness: 0.1, metalness: 0.3, emissive: '#fff4e0', emissiveIntensity: 0.15 }),
+    taillight: new MeshStandardMaterial({ color: '#5e0c10', roughness: 0.15, metalness: 0.2, emissive: '#8c1016', emissiveIntensity: 0.35 }),
     /** Aged grey ASA/ABS: lighter than the dash so the part reads against it. */
     clipPlastic: new MeshStandardMaterial({ color: '#626870', roughness: 0.55, metalness: 0 }),
     crack: new LineBasicMaterial({ color: new Color(3.2, 1.6, 1.1), toneMapped: false, transparent: true }),

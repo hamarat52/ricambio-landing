@@ -43,8 +43,8 @@ const CLOSE = { pos: [-0.12, 1.05, -0.1] as V3, target: CLIP, fov: 32, shift: [0
  */
 export const DESKTOP_KEYS: CamKey[] = [
   // 00 Hero — front 3/4, turntable
-  { p: 0.0, pos: [5.4, 1.55, -4.6], target: [0, 0.62, 0], fov: 30, shift: [0.12, 0.08], fit: 1 },
-  { p: 0.045, pos: [5.0, 1.45, -4.3], target: [0, 0.6, 0], fov: 30, shift: [0.1, 0.06], fit: 1, ease: 'soft' },
+  { p: 0.0, pos: [5.4, 1.55, -4.6], target: [0, 0.62, 0], fov: 30, shift: [0.12, 0.13], fit: 1 },
+  { p: 0.045, pos: [5.0, 1.45, -4.3], target: [0, 0.6, 0], fov: 30, shift: [0.1, 0.11], fit: 1, ease: 'soft' },
   // 01 Snap — over the A-pillar, through the (dissolving) windscreen, into the cabin
   { p: 0.06, pos: [2.4, 2.1, -2.6], target: [0.3, 0.85, -0.1], fov: 32, shift: [0.05, 0.02], fit: 0.8, via: true },
   { p: 0.068, pos: [0.6, 2.05, -1.55], target: [0.3, 0.85, 0], fov: 34, shift: [0.02, 0], fit: 0.5, via: true },

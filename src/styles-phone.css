@@ -945,3 +945,11 @@
   padding: 6px 10px;
   font-size: 12px;
 }
+
+/* counters beside the phone sit on paper so they stay legible over the car */
+.phone-aside .counter {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: var(--paper);
+  box-shadow: 0 12px 26px -18px rgba(17, 17, 17, 0.6);
+}

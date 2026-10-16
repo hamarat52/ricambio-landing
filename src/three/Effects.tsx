@@ -13,7 +13,7 @@ const SPARKLE = sceneRange('sparkle')
  * paper colour exact), very light grain and a soft vignette. When quality
  * drops, bloom goes first — except during the sparkle, which needs it.
  */
-export function Effects() {
+export function Effects({ bloom: bloomAllowed = true }: { bloom?: boolean }) {
   const quality = useStore((s) => s.quality)
   const inSparkle = useStore((s) => s.progress > SPARKLE.start && s.progress < SPARKLE.end)
   const bloom = useRef<BloomEffect>(null)
@@ -25,7 +25,8 @@ export function Effects() {
     bloom.current.intensity = 0.75 + 2.6 * sparkleGlow(p)
   })
 
-  const withBloom = quality !== 'low' || inSparkle
+  // Bloom joins once the visitor starts scrolling (keeps the first load light).
+  const withBloom = bloomAllowed && (quality !== 'low' || inSparkle)
   if (!withBloom) {
     return (
       <EffectComposer multisampling={0} enableNormalPass={false}>

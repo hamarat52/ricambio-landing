@@ -47,7 +47,7 @@ export default function Scene02Search() {
 
   return (
     <SceneLayer id="search">
-      <div ref={head} className="copy copy--tl copy--narrow search__head">
+      <div ref={head} className="copy copy--tl copy--narrow caption-card search__head">
         <h2 id="h-search" className="display">
           {c.search.headline}
         </h2>
