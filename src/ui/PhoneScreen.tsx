@@ -113,6 +113,119 @@ export function SearchScreen() {
   )
 }
 
+/** The part outline (C-profile with tab and pin), for the part page. */
+function ClipIllustration() {
+  return (
+    <svg className="part-hero__clip" viewBox="-13 -10 23 20" aria-hidden="true">
+      <path d="M-7.4 5 L-7.4 1 L-11.4 1 L-11.4 -1 L-7.4 -1 L-7.4 -5 L7.4 -5 L7.4 -1.75 L6.6 -1.75 L6 -3 L-5.4 -3 L-5.4 3 L6 3 L6.6 1.75 L7.4 1.75 L7.4 5 Z" />
+      <path d="M-5.1 5 L-5.1 8.2 L1.1 8.2 L1.1 5" />
+    </svg>
+  )
+}
+
+/** Scene 05: lock screen → "✨ Your part exists now." → the part page → Order a print. */
+export function PartScreen() {
+  const c = useCopy()
+  const root = useRef<HTMLDivElement>(null)
+  const flash = useRef<HTMLDivElement>(null)
+  const note = useRef<HTMLDivElement>(null)
+  const page = useRef<HTMLDivElement>(null)
+  const pla = useRef<SVGSVGElement>(null)
+  const order = useRef<HTMLDivElement>(null)
+  const ripple = useRef<HTMLSpanElement>(null)
+  const orderAnchor = getAnchor('order-btn')
+
+  useProgressEffect((p) => {
+    const el = root.current
+    if (!el) return
+    const r = sceneRange('sparkle')
+    const on = screenOn(p, r.start, r.end + 0.006)
+    el.style.opacity = on.toFixed(3)
+    el.style.visibility = on > 0 ? 'visible' : 'hidden'
+    if (on <= 0) return
+    const reduced = useStore.getState().reducedMotion
+    const t = reduced && p >= r.start && p <= r.end ? 0.9 : remap(p, r.start, r.end)
+    const b = BEATS.sparkle
+
+    // White flash on the screen at the burst (with the 3D bloom around the phone)
+    const burst = beat(t, b.burst)
+    const glow = burst > 0 && burst < 1 ? Math.min(1, burst * 8) * Math.pow(1 - burst, 1.4) : 0
+    if (flash.current) flash.current.style.opacity = glow.toFixed(3)
+    const phone = el.closest<HTMLElement>('.phone')
+    if (phone) phone.style.setProperty('--glow', glow.toFixed(3))
+
+    const n = power3Out(beat(t, [b.burst[0] + 0.02, b.burst[0] + 0.08]))
+    const nOut = beat(t, [b.page[0], b.page[0] + 0.06])
+    if (note.current) {
+      note.current.style.opacity = (n * (1 - nOut)).toFixed(3)
+      note.current.style.transform = `translate3d(0, ${((1 - n) * -120 - nOut * 40).toFixed(1)}%, 0)`
+    }
+    const pg = power3Out(beat(t, [b.page[0], b.page[0] + 0.1]))
+    if (page.current) page.current.style.transform = `translate3d(0, ${((1 - pg) * 102).toFixed(2)}%, 0)`
+    if (pla.current) pla.current.style.setProperty('--draw', power2InOut(beat(t, [b.page[0] + 0.1, b.page[0] + 0.18])).toFixed(3))
+
+    // Tap on "Order a print"
+    const tapAt = b.tap[0] + 0.1
+    const rip = beat(t, [tapAt, tapAt + 0.05])
+    if (ripple.current) {
+      ripple.current.style.opacity = rip > 0 && rip < 1 ? (1 - rip).toFixed(3) : '0'
+      ripple.current.style.transform = `translate(-50%, -50%) scale(${(0.2 + rip * 3).toFixed(3)})`
+    }
+    if (order.current) {
+      const rect = order.current.getBoundingClientRect()
+      orderAnchor.x = rect.left + rect.width * 0.3
+      orderAnchor.y = rect.top - 2
+      orderAnchor.visible = pg > 0.9
+      order.current.classList.toggle('is-pressed', t >= tapAt && t < tapAt + 0.04)
+    }
+    if (phone && order.current && useStore.getState().scene === 'sparkle') {
+      const o = offsetIn(order.current, phone)
+      thumb.x = o.x + o.w * 0.62
+      thumb.y = o.y + o.h * 0.5 + (1 - power2InOut(beat(t, [b.tap[0], tapAt]))) * phone.offsetHeight * 0.18
+      thumb.press = Math.abs(t - tapAt) < 0.02 ? 1 : 0
+      thumb.on = beat(t, [b.tap[0], b.tap[0] + 0.04]) * (1 - beat(t, [tapAt + 0.04, tapAt + 0.08]))
+    }
+  })
+
+  return (
+    <div className="screen screen--part" ref={root}>
+      <div className="lock" aria-hidden="true">
+        <span className="lock__time">09:41</span>
+      </div>
+      <div className="notification" ref={note}>
+        <span className="notification__app mono">{BRAND.name}</span>
+        <span className="notification__text">{c.sparkle.notification}</span>
+      </div>
+      <div className="part-page" ref={page}>
+        <StatusBar />
+        <div className="part-hero">
+          <ClipIllustration />
+          <span className="mono">v1 · 3MF + STEP</span>
+        </div>
+        <p className="part-title">{c.scan.file.title}</p>
+        <span className="badge badge--teal">{c.sparkle.badge}</span>
+        <p className="part-material">
+          {c.sparkle.materialOk}{' '}
+          <span className="struck">
+            {c.sparkle.materialBad}
+            <Strike ref={pla} variant={1} className="strike--word" />
+          </span>{' '}
+          {c.sparkle.materialBadReason}
+        </p>
+        <p className="part-note mono">{c.sparkle.aftermarket}</p>
+        <div className="part-actions">
+          <div className="pbtn pbtn--outline">{c.sparkle.download}</div>
+          <div className="pbtn pbtn--order" ref={order}>
+            {c.sparkle.order}
+            <span className="req-btn__ripple" ref={ripple} aria-hidden="true" />
+          </div>
+        </div>
+      </div>
+      <div className="screen-flash" ref={flash} aria-hidden="true" />
+    </div>
+  )
+}
+
 /** Scene 03: selector chips click in, empty state, "Request this part". */
 export function AppScreen() {
   const c = useCopy()

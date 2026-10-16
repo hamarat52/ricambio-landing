@@ -11,6 +11,7 @@ import { PALETTE } from '../content'
 import { scanSeam } from '../story'
 import { SCAN_KEYS } from './cameraPath'
 import { ScanStation } from './ScanStation'
+import { Sparkle } from './Sparkle'
 import { SplitView } from './SplitView'
 import { PaperFloor, paperColor } from './PaperFloor'
 
@@ -96,6 +97,7 @@ export default function Experience() {
       <PaperFloor />
       <MapDots />
       <Beacon />
+      <Sparkle />
       <Car />
       <SplitView seam={(p) => scanSeam(p, useStore.getState().mobile)} keys={SCAN_KEYS} background={PALETTE.inkDeep} environmentIntensity={0.18}>
         <ScanStation />

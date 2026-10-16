@@ -2,24 +2,31 @@ import { useFrame } from '@react-three/fiber'
 import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-three/postprocessing'
 import { BlendFunction, type BloomEffect, ToneMappingMode } from 'postprocessing'
 import { useRef } from 'react'
+import { sceneRange } from '../content'
 import { useStore } from '../store'
+import { sparkleGlow } from '../story'
+
+const SPARKLE = sceneRange('sparkle')
 
 /**
  * Bloom (sparkles, crack, nozzle), Khronos Neutral tone mapping (keeps the
- * paper colour exact), very light grain and a soft vignette. When the
- * performance monitor lowers quality, bloom is the first thing to go.
+ * paper colour exact), very light grain and a soft vignette. When quality
+ * drops, bloom goes first — except during the sparkle, which needs it.
  */
 export function Effects() {
   const quality = useStore((s) => s.quality)
+  const inSparkle = useStore((s) => s.progress > SPARKLE.start && s.progress < SPARKLE.end)
   const bloom = useRef<BloomEffect>(null)
 
   useFrame(() => {
     if (!bloom.current) return
-    // Scene-driven bloom boosts are added by later scenes (sparkle, printer).
-    bloom.current.intensity = 0.75
+    const p = useStore.getState().progress
+    // the sparkle is the brightest moment on the page
+    bloom.current.intensity = 0.75 + 2.6 * sparkleGlow(p)
   })
 
-  if (quality === 'low') {
+  const withBloom = quality !== 'low' || inSparkle
+  if (!withBloom) {
     return (
       <EffectComposer multisampling={0} enableNormalPass={false}>
         <ToneMapping mode={ToneMappingMode.NEUTRAL} />
@@ -29,7 +36,7 @@ export function Effects() {
   }
 
   return (
-    <EffectComposer multisampling={quality === 'high' ? 4 : 2} enableNormalPass={false}>
+    <EffectComposer multisampling={quality === 'high' ? 4 : quality === 'medium' ? 2 : 0} enableNormalPass={false}>
       <Bloom ref={bloom} mipmapBlur intensity={0.75} luminanceThreshold={1.0} luminanceSmoothing={0.2} radius={0.72} />
       <ToneMapping mode={ToneMappingMode.NEUTRAL} />
       <Noise blendFunction={BlendFunction.OVERLAY} opacity={0.12} />

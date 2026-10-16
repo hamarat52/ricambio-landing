@@ -402,7 +402,8 @@ button {
 }
 
 .display--word {
-  font-size: clamp(4rem, 13vw, 11rem);
+  white-space: nowrap;
+  font-size: clamp(3.6rem, 11vw, 10rem);
   line-height: 0.82;
   letter-spacing: -0.05em;
   transform-origin: 0% 80%;

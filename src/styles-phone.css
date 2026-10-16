@@ -492,3 +492,220 @@
     font-size: 2.6rem;
   }
 }
+
+/* ─── Part page (Scene 05) ───────────────────────────────────────────────── */
+.phone {
+  --glow: 0;
+}
+
+.phone__body {
+  transition: none;
+}
+
+.phone::after {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  border-radius: calc(var(--phone-w) * 0.22);
+  box-shadow:
+    0 0 calc(120px * var(--glow)) calc(30px * var(--glow)) rgba(220, 245, 250, calc(0.9 * var(--glow))),
+    0 0 calc(220px * var(--glow)) calc(60px * var(--glow)) rgba(43, 122, 140, calc(0.6 * var(--glow)));
+  pointer-events: none;
+}
+
+.screen--part {
+  padding: 0;
+  background: #15181c;
+  overflow: hidden;
+}
+
+.lock {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding-top: 26cqw;
+  background: radial-gradient(120% 80% at 50% 0%, #2b3138 0%, #15181c 70%);
+  color: #e9edf1;
+}
+
+.lock__time {
+  font-weight: 800;
+  font-size: 19cqw;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.notification {
+  position: absolute;
+  z-index: 2;
+  left: 4cqw;
+  right: 4cqw;
+  top: 14cqw;
+  display: grid;
+  gap: 1.4cqw;
+  padding: 3.6cqw 4cqw;
+  border-radius: 5cqw;
+  background: rgba(243, 245, 247, 0.97);
+  color: var(--ink);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+}
+
+.notification__app {
+  font-size: 3cqw;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.notification__text {
+  font-weight: 800;
+  font-size: 4.6cqw;
+}
+
+.part-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.8cqw;
+  padding: 15cqw 6cqw 6cqw;
+  background: #f3f5f7;
+  color: var(--ink);
+  transform: translate3d(0, 102%, 0);
+}
+
+.part-hero {
+  display: grid;
+  justify-items: center;
+  gap: 1.5cqw;
+  padding: 5cqw 0 3cqw;
+  border-radius: 4cqw;
+  background:
+    linear-gradient(rgba(17, 17, 17, 0.06) 1px, transparent 1px) 0 0 / 4cqw 4cqw,
+    linear-gradient(90deg, rgba(17, 17, 17, 0.06) 1px, transparent 1px) 0 0 / 4cqw 4cqw,
+    #e4e8ec;
+}
+
+.part-hero .mono {
+  font-size: 3cqw;
+}
+
+.part-hero__clip {
+  width: 44cqw;
+  fill: #5b6068;
+  stroke: var(--ink);
+  stroke-width: 0.35;
+  stroke-linejoin: round;
+}
+
+.part-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 5.6cqw;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* white on brand teal: 4.9:1 */
+.badge {
+  align-self: flex-start;
+  padding: 1.4cqw 2.8cqw;
+  border-radius: 999px;
+  font: 700 3.2cqw/1.2 var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.badge--teal {
+  background: var(--teal);
+  color: #fff;
+}
+
+.part-material {
+  margin: 0;
+  font-weight: 800;
+  font-size: 4.2cqw;
+  line-height: 1.35;
+}
+
+.struck {
+  position: relative;
+  display: inline-block;
+  color: #3d434b;
+}
+
+.strike--word {
+  left: -12%;
+  width: 124%;
+  top: 10%;
+  height: 80%;
+}
+
+.part-note {
+  margin: 0;
+  font-size: 3.1cqw;
+  color: #3d434b;
+}
+
+.part-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4cqw;
+  margin-top: auto;
+}
+
+.pbtn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 12cqw;
+  padding: 0 2cqw;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 3.8cqw;
+  text-align: center;
+  overflow: hidden;
+}
+
+.pbtn--outline {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+/* orange is reserved for "Order a print" (ink text keeps 6.2:1) */
+.pbtn--order {
+  background: var(--orange);
+  color: var(--ink);
+}
+
+.pbtn--order.is-pressed {
+  transform: scale(0.97);
+}
+
+.screen-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: radial-gradient(circle at 50% 40%, #ffffff 0%, #effcff 45%, rgba(220, 245, 250, 0.9) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the sparkle layer sits above the phone so the arrow can point into it */
+.layer--sparkle {
+  z-index: 13;
+}
+
+.order-arrow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: clamp(170px, 19vw, 250px);
+  visibility: hidden;
+  stroke-width: 2.6;
+}
+
+.sparkle__card {
+  max-width: min(32rem, calc(100vw - 2 * var(--gutter)));
+}

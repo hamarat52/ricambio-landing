@@ -1,4 +1,5 @@
 import { useRef, type ReactNode } from 'react'
+import { getAnchor } from '../lib/anchors'
 import { useProgressEffect } from '../lib/useProgress'
 import { phoneIn } from '../story'
 import { useCopy } from '../store'
@@ -37,6 +38,8 @@ function Thumb({ innerRef }: { innerRef: React.Ref<SVGSVGElement> }) {
  * search, the request, the part page and the fit-check form; each screen
  * animates from its own scene's progress.
  */
+const screenAnchor = getAnchor('phone-screen')
+
 export function Phone({ children }: { children: ReactNode }) {
   const c = useCopy()
   const root = useRef<HTMLDivElement>(null)
@@ -47,6 +50,11 @@ export function Phone({ children }: { children: ReactNode }) {
     if (!el) return
     const v = phoneIn(p)
     el.style.visibility = v > 0.001 ? 'visible' : 'hidden'
+    // where the screen is, for 3D effects that start or land at the phone
+    const r = el.getBoundingClientRect()
+    screenAnchor.x = r.left + r.width / 2
+    screenAnchor.y = r.top + r.height * 0.42
+    screenAnchor.visible = v > 0.5
     el.style.transform = `translate3d(${((1 - v) * 18).toFixed(2)}%, ${((1 - v) * 105).toFixed(2)}vh, 0) rotate(${((1 - v) * 6).toFixed(2)}deg)`
     const t = thumbEl.current
     if (t) {

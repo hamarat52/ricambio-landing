@@ -121,13 +121,40 @@ export function homeSeam(p: number, mobile: boolean): number {
   return seamWindow(p, r.start, r.start + len * BEATS.home.seam[1], r.end - len * 0.12, r.end, mobile)
 }
 
+// ─── Sparkle (Scene 05) ─────────────────────────────────────────────────────
+
+export const sparkleLocal = (p: number) => sceneLocal(p, 'sparkle')
+
+/** Head of the particle stream along the Torino → Istanbul arc (0 → 1). */
+export function arcHead(p: number): number {
+  return beat(sparkleLocal(p), BEATS.sparkle.arc, power2InOut)
+}
+
+/** The burst at the phone: 0 → 1 over the burst beat. */
+export function burstT(p: number): number {
+  return beat(sparkleLocal(p), BEATS.sparkle.burst)
+}
+
+/** Bloom envelope of the brightest moment on the page (fast attack, slow decay). */
+export function sparkleGlow(p: number): number {
+  const b = burstT(p)
+  if (b <= 0 || b >= 1) return 0
+  return Math.min(1, b * 8) * Math.pow(1 - b, 1.4)
+}
+
+/** Global progress of the burst (for the one-shot chime). */
+export const BURST_AT = (() => {
+  const r = sceneRange('sparkle')
+  return r.start + (r.end - r.start) * BEATS.sparkle.burst[0]
+})()
+
 // ─── Phone (DOM) ────────────────────────────────────────────────────────────
 
 /** Emre's phone on screen: 0 = hidden below/right, 1 = in place. */
 export function phoneIn(p: number): number {
   const windows: [number, number, number, number][] = [
     [0.146, 0.162, 0.266, 0.278], // search → request (leaves once the beacon is away)
-    [0.462, 0.474, 0.512, 0.52], // the part page
+    [0.462, 0.474, 0.5195, 0.526], // the part page, until "Order a print" is tapped
     [0.776, 0.786, 0.808, 0.815], // the fit-check form
   ]
   let v = 0
