@@ -19,6 +19,8 @@ import { ErrorBoundary } from './ui/ErrorBoundary'
 import { Footer } from './ui/Footer'
 import { Header } from './ui/Header'
 import { Loader } from './ui/Loader'
+import { Phone } from './ui/Phone'
+import { AppScreen, SearchScreen } from './ui/PhoneScreen'
 
 // three.js and the whole 3D scene load after the hero text has painted.
 const Experience = lazy(() => import('./three/Experience'))
@@ -141,6 +143,10 @@ export default function App() {
           <Scene09Home />
           <Scene10Library />
           <Scene11CTA />
+          <Phone>
+            <SearchScreen />
+            <AppScreen />
+          </Phone>
         </div>
 
         <div ref={trackRef} className="track" aria-hidden="true">

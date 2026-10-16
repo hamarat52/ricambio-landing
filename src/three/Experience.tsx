@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react'
 import { useStore } from '../store'
 import { CameraRig } from './CameraRig'
 import { Car } from './Car'
+import { Beacon } from './Beacon'
 import { Effects } from './Effects'
+import { MapDots } from './MapDots'
 import { PaperFloor, paperColor } from './PaperFloor'
 
 /** Studio lighting built from light formers — nothing is downloaded. */
@@ -33,12 +35,10 @@ function ReadySignal() {
   const camera = useThree((s) => s.camera)
   useEffect(() => {
     let alive = true
-    const done = () =>
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => {
-          if (alive) useStore.getState().setReady3D(true)
-        }),
-      )
+    // Not tied to requestAnimationFrame: a background tab never fires it.
+    const done = () => {
+      if (alive) setTimeout(() => useStore.getState().setReady3D(true), 60)
+    }
     gl.compileAsync(scene, camera).then(done, done)
     // never keep the canvas hidden for long, even if parallel compile is slow
     const fallback = setTimeout(done, 2500)
@@ -89,6 +89,8 @@ export default function Experience() {
       <Lights />
       <CameraRig />
       <PaperFloor />
+      <MapDots />
+      <Beacon />
       <Car />
       <ContactShadows position={[0, 0.002, 0]} scale={9} resolution={512} blur={2.6} far={1.1} opacity={0.5} color="#111111" />
       <Effects />

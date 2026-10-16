@@ -5,7 +5,7 @@ import { PALETTE } from '../content'
 import { neutralPreimage } from '../lib/color'
 import { remap } from '../lib/remap'
 import { useStore } from '../store'
-import { carPose } from './story'
+import { carPose } from '../story'
 
 /**
  * The paper the car sits on: an unlit plane in exactly the background colour

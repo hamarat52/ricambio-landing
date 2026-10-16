@@ -6,7 +6,7 @@ import { power3InOut } from '../lib/easing'
 import { useStore } from '../store'
 import { CAR, carGeometries } from './carGeometry'
 import { materials, setCutaway } from './materials'
-import { carPose, cutaway, turntableWeight } from './story'
+import { carPose, cutaway, turntableWeight } from '../story'
 import { Vent } from './Vent'
 
 declare const __CAR_GLB__: boolean

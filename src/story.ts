@@ -1,6 +1,6 @@
-import { BEATS, sceneRange } from '../content'
-import { power2InOut, power3InOut } from '../lib/easing'
-import { beat, remap, sceneLocal } from '../lib/remap'
+import { BEATS, sceneRange } from './content'
+import { power2InOut, power3InOut } from './lib/easing'
+import { beat, remap, sceneLocal } from './lib/remap'
 
 /**
  * Pure functions of the global progress that several scenes share (the car
@@ -64,6 +64,46 @@ export function ventState(p: number): VentState {
   out.droop = settle(beat(t, b.droop))
   // Scene 08 (the new clip) extends this in build step 7.
   return out
+}
+
+// ─── Map (Scenes 02–07) ─────────────────────────────────────────────────────
+
+/** Radius (world units) of the dot map's reveal around Istanbul. */
+export function mapReveal(p: number): number {
+  return power2InOut(remap(p, 0.2, 0.258)) * 95
+}
+
+/** Overall map opacity: in as the camera rises, out before the library pull-back. */
+export function mapOpacity(p: number): number {
+  return Math.min(remap(p, 0.198, 0.215), 1 - remap(p, 0.86, 0.885))
+}
+
+/** The request scene's local time, used by the beacon and the owner pops. */
+export const requestLocal = (p: number) => sceneLocal(p, 'request')
+
+/** Beacon flight 0 → 1 (leaves the phone, lands on Istanbul). */
+export function beaconFlight(p: number): number {
+  return beat(requestLocal(p), BEATS.request.beacon)
+}
+
+/** Istanbul keeps pulsing from the beacon landing until the part arrives in Scene 05. */
+export function istanbulPulse(p: number): number {
+  const landed = requestLocal(p) >= BEATS.request.beacon[1] ? 1 : 0
+  return landed * (1 - remap(p, 0.505, 0.52))
+}
+
+// ─── Phone (DOM) ────────────────────────────────────────────────────────────
+
+/** Emre's phone on screen: 0 = hidden below/right, 1 = in place. */
+export function phoneIn(p: number): number {
+  const windows: [number, number, number, number][] = [
+    [0.146, 0.162, 0.266, 0.278], // search → request (leaves once the beacon is away)
+    [0.462, 0.474, 0.512, 0.52], // the part page
+    [0.776, 0.786, 0.808, 0.815], // the fit-check form
+  ]
+  let v = 0
+  for (const [a, b, c, d] of windows) v = Math.max(v, window4(p, a, b, c, d))
+  return v
 }
 
 /** Global progress of the snap moment (for the one-shot sound). */

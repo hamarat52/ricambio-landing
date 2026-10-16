@@ -133,8 +133,6 @@ export interface City {
   key: string
   lat: number
   lon: number
-  /** Owners who want the part here (Scene 03 "+1" dots). */
-  want?: number
 }
 
 export const CITIES = {
@@ -143,20 +141,24 @@ export const CITIES = {
   ankara: { key: 'ankara', lat: 39.93, lon: 32.86 },
 } as const
 
-/** Cities that light up with "+1" in Scene 03. Their `want` values sum to 36 (+ Emre = 37). */
+/**
+ * Named cities that light up with "+1" in Scene 03. Each is one owner; the
+ * rest of the NUMBERS.ownersWanting total (Emre included) are unlabelled
+ * dots on the map.
+ */
 export const WANTING_CITIES: readonly City[] = [
-  { key: 'milano', lat: 45.46, lon: 9.19, want: 6 },
-  { key: 'muenchen', lat: 48.14, lon: 11.58, want: 4 },
-  { key: 'lyon', lat: 45.76, lon: 4.84, want: 3 },
-  { key: 'birmingham', lat: 52.49, lon: -1.89, want: 3 },
-  { key: 'ankara', lat: 39.93, lon: 32.86, want: 4 },
-  { key: 'izmir', lat: 38.42, lon: 27.14, want: 3 },
-  { key: 'wien', lat: 48.21, lon: 16.37, want: 2 },
-  { key: 'barcelona', lat: 41.39, lon: 2.17, want: 2 },
-  { key: 'roma', lat: 41.9, lon: 12.5, want: 4 },
-  { key: 'athina', lat: 37.98, lon: 23.73, want: 2 },
-  { key: 'zuerich', lat: 47.38, lon: 8.54, want: 1 },
-  { key: 'bologna', lat: 44.49, lon: 11.34, want: 2 },
+  { key: 'milano', lat: 45.46, lon: 9.19 },
+  { key: 'muenchen', lat: 48.14, lon: 11.58 },
+  { key: 'lyon', lat: 45.76, lon: 4.84 },
+  { key: 'birmingham', lat: 52.49, lon: -1.89 },
+  { key: 'ankara', lat: 39.93, lon: 32.86 },
+  { key: 'izmir', lat: 38.42, lon: 27.14 },
+  { key: 'wien', lat: 48.21, lon: 16.37 },
+  { key: 'barcelona', lat: 41.39, lon: 2.17 },
+  { key: 'roma', lat: 41.9, lon: 12.5 },
+  { key: 'athina', lat: 37.98, lon: 23.73 },
+  { key: 'zuerich', lat: 47.38, lon: 8.54 },
+  { key: 'bologna', lat: 44.49, lon: 11.34 },
 ]
 
 /** Parts floating in the Scene 10 constellation. `fits` is DEMO data. */
@@ -248,6 +250,7 @@ const en = {
   },
   request: {
     headline: "So he asks. And he isn't the only one.",
+    appTitle: 'Find a part',
     chipLabels: ['Make', 'Model', 'Year', 'Area', 'Part'],
     chips: ['Alfa Romeo', '146', '2001', 'Cabin · Dashboard', 'AC vent clip'],
     empty: 'No file for this part yet.',
@@ -433,6 +436,7 @@ const tr: Copy = {
   },
   request: {
     headline: 'Sonunda soruyor. Ve soran bir tek o değil.',
+    appTitle: 'Parça bul',
     chipLabels: ['Marka', 'Model', 'Yıl', 'Bölge', 'Parça'],
     chips: ['Alfa Romeo', '146', '2001', 'Kabin · Torpido', 'Klima menfez klipsi'],
     empty: 'Bu parça için henüz dosya yok.',

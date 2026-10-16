@@ -19,7 +19,7 @@ import { useStore } from '../store'
 import { clipGeometries } from './clipGeometry'
 import { materials } from './materials'
 import { ScreenAnchor } from './ScreenAnchor'
-import { SNAP_AT, ventState } from './story'
+import { SNAP_AT, ventState } from '../story'
 
 /**
  * The central dashboard vent and its mounting clip — the part that snaps in
