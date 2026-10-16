@@ -24,7 +24,7 @@ import { PALETTE } from '../content'
 import { power2Out } from '../lib/easing'
 import { clamp01, hash01, lerp } from '../lib/remap'
 import { playClick, playCrack } from '../lib/sound'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { clipGeometries } from './clipGeometry'
 import { materials } from './materials'
 import { ScreenAnchor } from './ScreenAnchor'
@@ -213,7 +213,8 @@ export function Vent() {
   }, [])
 
   useFrame(({ camera, clock }) => {
-    const { progress: p, sound } = useStore.getState()
+    const { sound } = useStore.getState()
+    const p = storyProgress()
     const s = ventState(p)
 
     // One-shot crack sound when scrolling forward through the snap.
@@ -229,11 +230,9 @@ export function Vent() {
     }
 
     if (intact.current) intact.current.visible = !s.broken
-    const pieces: [Mesh | null, Trajectory][] = [
-      [pieceA.current, trajectories.a],
-      [pieceB.current, trajectories.b],
-    ]
-    for (const [mesh, tr] of pieces) {
+    for (let pi = 0; pi < 2; pi++) {
+      const mesh = pi === 0 ? pieceA.current : pieceB.current
+      const tr = pi === 0 ? trajectories.a : trajectories.b
       if (!mesh) continue
       mesh.visible = s.broken
       if (!s.broken) continue

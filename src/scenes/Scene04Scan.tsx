@@ -5,7 +5,7 @@ import { getAnchor } from '../lib/anchors'
 import { power2InOut, power2Out, power3Out } from '../lib/easing'
 import { beat, lerp, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { useCopy, useStore, storyProgress } from '../store'
 import { scanSeam } from '../story'
 import { SceneLayer } from '../ui/SceneLayer'
 import { setPoses, Silhouette } from '../ui/Silhouette'
@@ -15,7 +15,6 @@ const B = BEATS.scan
 /** Local scan time, holding a late still in reduced-motion mode. */
 function scanT(p: number): number {
   const r = sceneRange('scan')
-  if (useStore.getState().reducedMotion && p >= r.start && p <= r.end) return 0.97
   return remap(p, r.start, r.end)
 }
 
@@ -36,7 +35,7 @@ function Measurements() {
     const tab = getAnchor('scan-tab')
     const r = sceneRange('scan')
     const tick = () => {
-      const p = useStore.getState().progress
+      const p = storyProgress()
       const live = p >= r.start && p <= r.end
       const t = scanT(p)
       keys.forEach((k, i) => {

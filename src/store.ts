@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
-import { COPY, SCENES, type Lang, type SceneId } from './content'
+import { COPY, SCENES, STILLS, type Lang, type SceneId } from './content'
 
 function sceneIndexAt(progress: number): number {
   for (let i = SCENES.length - 1; i >= 0; i--) if (progress >= SCENES[i].start) return i
@@ -84,6 +84,17 @@ export const useStore = create<AppState>()(
     setReducedMotion: (v) => set({ reducedMotion: v }),
   })),
 )
+
+/**
+ * The progress the 3D scene and the DOM animations use. With reduced motion
+ * it snaps to the current scene's still (no scrubbing); otherwise it is the
+ * scroll progress itself.
+ */
+export function storyProgress(s: AppState = useStore.getState()): number {
+  if (!s.reducedMotion) return s.progress
+  const sc = SCENES[s.sceneIndex]
+  return sc.start + (sc.end - sc.start) * STILLS[sc.id]
+}
 
 /** Current language's copy. Re-renders only when the language changes. */
 export const useCopy = () => COPY[useStore((s) => s.lang)]

@@ -5,7 +5,7 @@ import { PALETTE, sceneRange } from '../content'
 import { neutralPreimage } from '../lib/color'
 import { power2InOut } from '../lib/easing'
 import { remap } from '../lib/remap'
-import { useStore } from '../store'
+import { storyProgress } from '../store'
 import { paperColor } from './PaperFloor'
 
 const CTA = sceneRange('cta')
@@ -29,7 +29,7 @@ export function Atmosphere() {
   )
 
   useFrame(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const g = power2InOut(remap(p, CTA.start + (CTA.end - CTA.start) * 0.4, CTA.end))
     paperColor.copy(c.paper).lerp(c.warm, g)
     if (key.current) {

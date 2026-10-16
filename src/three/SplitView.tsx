@@ -3,7 +3,7 @@ import { createPortal, useFrame, useThree } from '@react-three/fiber'
 import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react'
 import { Color, HalfFloatType, type Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Vector2 } from 'three'
 import { neutralPreimage } from '../lib/color'
-import { useStore } from '../store'
+import { storyProgress } from '../store'
 import { CameraPath, type CamKey, createSample } from './cameraPath'
 
 /** Layer the split overlay lives on (the contact-shadow camera never sees it). */
@@ -89,7 +89,7 @@ export function SplitView({ seam, keys, background, environmentIntensity = 0.3, 
 
   // Priority 0.5: after the portal's own useFrame callbacks (0), before the composer (1).
   useFrame(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const s = seam(p)
     const active = s < 0.999
     if (quad.current) quad.current.visible = active

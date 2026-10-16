@@ -2,7 +2,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import { Euler, PerspectiveCamera, Quaternion } from 'three'
 import { remap } from '../lib/remap'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { CameraPath, createSample, DESKTOP_KEYS, MOBILE_KEYS } from './cameraPath'
 
 const DEG = Math.PI / 180
@@ -35,7 +35,8 @@ export function CameraRig() {
   }, [])
 
   useFrame((_, dt) => {
-    const { progress, reducedMotion } = useStore.getState()
+    const { reducedMotion } = useStore.getState()
+    const progress = storyProgress()
     path.sample(progress, sample)
 
     // Narrow viewports: back off along the view axis so wide framings still fit.

@@ -20,7 +20,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { power2In, power2InOut } from '../lib/easing'
 import { beat, clamp01, lerp } from '../lib/remap'
-import { useStore } from '../store'
+import { storyProgress } from '../store'
 import { CLIP_MM, clipGeometries } from './clipGeometry'
 import { ScreenAnchor } from './ScreenAnchor'
 import { createLayerPrintMaterial } from './shaders/layerPrint'
@@ -131,6 +131,7 @@ export function Printer({ variant, count, position, progress, finish, visible, p
   const supports = useRef<(Mesh | null)[]>([])
   const parts = useRef<(Group | null)[]>([])
 
+  const tmpPt = useMemo(() => [0, 0, 0], [])
   const pathLine = useMemo(() => {
     const g = new BufferGeometry()
     g.setAttribute('position', new BufferAttribute(new Float32Array(PATH_SAMPLES * 3), 3))
@@ -138,7 +139,7 @@ export function Printer({ variant, count, position, progress, finish, visible, p
   }, [mats])
 
   useFrame(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const g = group.current
     if (!g) return
     g.visible = visible(p)
@@ -166,7 +167,7 @@ export function Printer({ variant, count, position, progress, finish, visible, p
       out[1] = y
       out[2] = z
     }
-    const pt = [0, 0, 0]
+    const pt = tmpPt
     pathAt(layers, pt)
     const printing = k > 0 && k < 1
     const parkX = 0.15

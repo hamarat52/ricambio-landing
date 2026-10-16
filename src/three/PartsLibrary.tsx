@@ -5,7 +5,7 @@ import { LIBRARY_PARTS, sceneRange } from '../content'
 import { getAnchor, libraryHover } from '../lib/anchors'
 import { power2InOut, power3InOut } from '../lib/easing'
 import { beat, hash01, lerp, remap } from '../lib/remap'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { PART_KINDS, partGeometry, type PartKind } from './libraryParts'
 
 /** Named parts (labelled in the DOM) map to these procedural kinds. */
@@ -92,7 +92,8 @@ export function PartsLibrary() {
   const hoverLift = useRef<number[]>(slots.map(() => 0))
 
   useFrame(({ clock }, dt) => {
-    const { progress: p, reducedMotion } = useStore.getState()
+    const { reducedMotion } = useStore.getState()
+    const p = storyProgress()
     const show = remap(p, lib.start, lib.start + (lib.end - lib.start) * 0.3)
     const flyBack = beat(remap(p, cta.start, cta.end), [0, 0.5], power3InOut)
     const visible = show > 0 && flyBack < 1
@@ -139,7 +140,7 @@ export function PartsLibrary() {
 
   const onMove = (kind: PartKind) => (e: ThreeEvent<PointerEvent>) => {
     if (e.instanceId === undefined) return
-    const p = useStore.getState().progress
+    const p = storyProgress()
     if (p < lib.start || p > lib.end) return
     e.stopPropagation()
     libraryHover.index = byKind.get(kind)![e.instanceId]

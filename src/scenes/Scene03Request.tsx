@@ -6,7 +6,7 @@ import { power2Out } from '../lib/easing'
 import { owners } from '../lib/geo'
 import { beat, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { useCopy, useStore, storyProgress } from '../store'
 import { SceneLayer } from '../ui/SceneLayer'
 
 /** "+1" labels that follow named cities on the 3D map. */
@@ -19,7 +19,8 @@ function CityLabels() {
     const anchors = WANTING_CITIES.map((city) => getAnchor(`city-${city.key}`))
     const r = sceneRange('request')
     const tick = () => {
-      const { progress: p, reducedMotion } = useStore.getState()
+      const { reducedMotion } = useStore.getState()
+    const p = storyProgress()
       const live = p >= r.start && p <= r.end + 0.004
       const t = reducedMotion && live ? 1 : remap(p, r.start, r.end)
       refs.current.forEach((el, i) => {

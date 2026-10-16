@@ -38,6 +38,15 @@ function Lights() {
   )
 }
 
+/**
+ * Contact shadows re-render the scene from below, so they only update while
+ * the car moves on its turntable (hero, finale); elsewhere they hold.
+ */
+function Shadows() {
+  const live = useStore((s) => s.progress < 0.06 || s.progress > 0.95)
+  return <ContactShadows position={[0, 0.002, 0]} scale={9} resolution={512} blur={2.6} far={1.1} opacity={0.5} color="#111111" frames={live ? Infinity : 1} />
+}
+
 /** Compile shaders up front, then tell the DOM the 3D scene is ready (fades the loader). */
 function ReadySignal() {
   const gl = useThree((s) => s.gl)
@@ -121,7 +130,7 @@ export default function Experience() {
         <HomeStation />
       </SplitView>
       <PartsLibrary />
-      <ContactShadows position={[0, 0.002, 0]} scale={9} resolution={512} blur={2.6} far={1.1} opacity={0.5} color="#111111" />
+      <Shadows />
       <Effects />
       <ReadySignal />
       {reduced && <DemandInvalidator />}

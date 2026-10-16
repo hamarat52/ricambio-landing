@@ -5,7 +5,7 @@ import { getAnchor, libraryHover } from '../lib/anchors'
 import { power2InOut, power2Out } from '../lib/easing'
 import { beat, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { useCopy, useStore, storyProgress } from '../store'
 import { HandArrow } from '../ui/HandArrow'
 import { SceneLayer } from '../ui/SceneLayer'
 
@@ -36,7 +36,7 @@ function PartLabels() {
     const anchors = LIBRARY_PARTS.map((_, i) => getAnchor(`lib-${i}`))
     const r = sceneRange('library')
     const tick = () => {
-      const p = useStore.getState().progress
+      const p = storyProgress()
       const t = remap(p, r.start, r.end)
       const on = p >= r.start && p <= r.end ? power2Out(beat(t, [0.2, 0.32])) : 0
       refs.current.forEach((el, i) => {

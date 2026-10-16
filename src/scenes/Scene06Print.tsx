@@ -5,7 +5,7 @@ import { getAnchor } from '../lib/anchors'
 import { popOut, power2InOut, power2Out } from '../lib/easing'
 import { beat, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { storyProgress, useCopy } from '../store'
 import { printProgress } from '../story'
 import { Caliper, type CaliperHandle } from '../ui/Caliper'
 import { SceneLayer } from '../ui/SceneLayer'
@@ -14,7 +14,6 @@ const B = BEATS.print
 
 function printT(p: number) {
   const r = sceneRange('print')
-  if (useStore.getState().reducedMotion && p >= r.start && p <= r.end) return 0.97
   return remap(p, r.start, r.end)
 }
 
@@ -83,7 +82,7 @@ export default function Scene06Print() {
     const tab = getAnchor('shop-tab')
     const r = sceneRange('print')
     const tick = () => {
-      const p = useStore.getState().progress
+      const p = storyProgress()
       const live = p >= r.start && p <= r.end
       const fin = beat(printT(p), B.finish)
       const on = live && tab.visible ? beat(fin, [0.5, 0.6]) : 0

@@ -5,7 +5,7 @@ import { getAnchor } from '../lib/anchors'
 import { popOut, power2InOut, power2Out } from '../lib/easing'
 import { beat, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { useCopy, useStore, storyProgress } from '../store'
 import { HandArrow } from '../ui/HandArrow'
 import { SceneLayer } from '../ui/SceneLayer'
 import { setPoses, Silhouette } from '../ui/Silhouette'
@@ -43,7 +43,7 @@ export default function Scene05Sparkle() {
     const tick = () => {
       const el = arrow.current
       if (!el) return
-      const p = useStore.getState().progress
+      const p = storyProgress()
       const t = remap(p, r.start, r.end)
       const show = target.visible && p >= r.start && p <= r.end && (t >= B.tap[0] || useStore.getState().reducedMotion)
       el.style.visibility = show ? 'visible' : 'hidden'

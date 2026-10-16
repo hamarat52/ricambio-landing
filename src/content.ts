@@ -109,6 +109,26 @@ export const BEATS = {
   cta: { flyBack: [0, 0.5], golden: [0.5, 1] },
 } as const satisfies Record<SceneId, Record<string, readonly [number, number]>>
 
+/**
+ * Reduced-motion mode: each scene holds one still (its local time) instead of
+ * scrubbing, and scenes change with a fade. Pick the frame that tells the
+ * scene's story on its own.
+ */
+export const STILLS: Record<SceneId, number> = {
+  hero: 0,
+  snap: 0.97,
+  search: 0.92,
+  request: 0.97,
+  scan: 0.66,
+  sparkle: 0.84,
+  print: 0.72,
+  ship: 0.5,
+  click: 0.8,
+  home: 0.72,
+  library: 0.9,
+  cta: 1,
+}
+
 // ─── Story numbers ──────────────────────────────────────────────────────────
 
 export const NUMBERS = {

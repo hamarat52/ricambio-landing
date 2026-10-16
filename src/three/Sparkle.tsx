@@ -18,7 +18,7 @@ import { project } from '../lib/geo'
 import { power2Out, power3Out } from '../lib/easing'
 import { hash01 } from '../lib/remap'
 import { playChime } from '../lib/sound'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { arcHead, BURST_AT, burstT, mapOpacity, sparkleLocal } from '../story'
 
 const ISTANBUL = new Vector3(0, 1.6, 0)
@@ -91,6 +91,7 @@ export function Sparkle() {
     return { g, m, line: new Line(g, m) }
   }, [])
   const lastP = useRef(0)
+  const clouds = useMemo(() => [stream, burst, glints, marker], [stream, burst, glints, marker])
 
   const seeds = useMemo(() => {
     const n = Math.max(stream.n, burst.n, glints.n)
@@ -111,10 +112,11 @@ export function Sparkle() {
   const phone = getAnchor('phone-screen')
 
   useFrame(({ camera, size, viewport, clock }) => {
-    const { progress: p, sound } = useStore.getState()
+    const { sound } = useStore.getState()
+    const p = storyProgress()
     const cam = camera as PerspectiveCamera
     const scale = (size.height * viewport.dpr) / (2 * Math.tan((cam.fov * Math.PI) / 360))
-    for (const c of [stream, burst, glints, marker]) {
+    for (const c of clouds) {
       c.m.uniforms.uScale.value = scale
       c.m.uniforms.uMax.value = 40 * viewport.dpr
     }

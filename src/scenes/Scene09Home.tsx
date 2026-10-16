@@ -12,7 +12,6 @@ const B = BEATS.home
 
 function homeT(p: number) {
   const r = sceneRange('home')
-  if (useStore.getState().reducedMotion && p >= r.start && p <= r.end) return 0.95
   return remap(p, r.start, r.end)
 }
 

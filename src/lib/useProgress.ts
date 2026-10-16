@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { sceneRange, type SceneId } from '../content'
-import { useStore } from '../store'
+import { storyProgress, useStore } from '../store'
 import { remap } from './remap'
 
 /**
@@ -12,7 +12,7 @@ export function useProgressEffect(cb: (progress: number) => void, deps: readonly
   const ref = useRef(cb)
   ref.current = cb
   useLayoutEffect(() => {
-    const run = () => ref.current(useStore.getState().progress)
+    const run = () => ref.current(storyProgress())
     run()
     const unsubP = useStore.subscribe((s) => s.progress, run)
     const unsubL = useStore.subscribe((s) => s.lang, () => requestAnimationFrame(run))

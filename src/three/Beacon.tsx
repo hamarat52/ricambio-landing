@@ -3,7 +3,7 @@ import { useMemo, useRef } from 'react'
 import { AdditiveBlending, Color, type Group, type Mesh, MeshBasicMaterial, QuadraticBezierCurve3, SphereGeometry, Vector3 } from 'three'
 import { PALETTE } from '../content'
 import { getAnchor } from '../lib/anchors'
-import { useStore } from '../store'
+import { storyProgress } from '../store'
 import { beaconFlight } from '../story'
 
 const TRAIL = 7
@@ -47,7 +47,7 @@ export function Beacon() {
   useFrame(({ camera, size }) => {
     const g = group.current
     if (!g) return
-    const s = beaconFlight(useStore.getState().progress)
+    const s = beaconFlight(storyProgress())
     g.visible = s > 0 && s < 1
     if (!g.visible) return
 

@@ -109,12 +109,18 @@ export const HOME_KEYS: CamKey[] = [
  * Mobile variant: same stops, wider lens, subject lifted into the upper part
  * of a portrait screen (the phone UI and copy sit below it).
  */
-export const MOBILE_KEYS: CamKey[] = DESKTOP_KEYS.map((k) => ({
-  ...k,
-  fov: k.fov + 10,
-  shift: [0, 0.16],
-  fit: Math.max(k.fit ?? 1, 0.6),
-}))
+export const MOBILE_KEYS: CamKey[] = DESKTOP_KEYS.map((k) => {
+  const m: CamKey = { ...k, fov: k.fov + 10, shift: [0, 0.16], fit: Math.max(k.fit ?? 1, 0.6) }
+  // Map views: the map is wider than a portrait screen, so frame Torino ↔ Istanbul
+  // tightly instead of backing off to show all of Europe.
+  if (k.pos[1] > 10) {
+    m.fit = 0.25
+    m.shift = [-0.14, 0.12]
+  }
+  // Finale: the car sits low, under the headline and the CTAs.
+  if (k.p === 1) m.shift = [0, -0.2]
+  return m
+})
 
 export interface CamSample {
   pos: Vector3

@@ -3,7 +3,7 @@ import { Bloom, EffectComposer, Noise, ToneMapping, Vignette } from '@react-thre
 import { BlendFunction, type BloomEffect, ToneMappingMode } from 'postprocessing'
 import { useRef } from 'react'
 import { sceneRange } from '../content'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { sparkleGlow } from '../story'
 
 const SPARKLE = sceneRange('sparkle')
@@ -20,7 +20,7 @@ export function Effects() {
 
   useFrame(() => {
     if (!bloom.current) return
-    const p = useStore.getState().progress
+    const p = storyProgress()
     // the sparkle is the brightest moment on the page
     bloom.current.intensity = 0.75 + 2.6 * sparkleGlow(p)
   })

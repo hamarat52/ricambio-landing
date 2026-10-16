@@ -5,7 +5,7 @@ import { getAnchor } from '../lib/anchors'
 import { power2InOut, power2Out } from '../lib/easing'
 import { beat, lerp, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { storyProgress, useCopy } from '../store'
 import { CONTACT_T } from '../story'
 import { SceneLayer } from '../ui/SceneLayer'
 
@@ -22,7 +22,7 @@ function Hand() {
     const tick = () => {
       const h = el.current
       if (!h) return
-      const p = useStore.getState().progress
+      const p = storyProgress()
       const t = remap(p, r.start, r.end)
       const live = p >= r.start && p <= r.end
       const on = live ? Math.min(beat(t, [B.descend[1], B.insert[0] + 0.02]), 1 - beat(t, [CONTACT_T + 0.02, CONTACT_T + 0.07])) : 0

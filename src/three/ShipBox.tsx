@@ -16,7 +16,7 @@ import {
 import { BRAND, COPY, type Lang } from '../content'
 import { power2InOut, power2Out, power3Out } from '../lib/easing'
 import { beat, hash01, lerp } from '../lib/remap'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { packT, travelT } from '../story'
 import { CLIP_MM, clipGeometries } from './clipGeometry'
 import { TORINO } from './Sparkle'
@@ -59,7 +59,7 @@ function drawQr(lang: Lang): HTMLCanvasElement {
   g.fillText(b ? `${a}?` : a, 240, 140)
   if (b) g.fillText(b, 240, 184)
   g.font = '500 20px "JetBrains Mono", monospace'
-  g.fillText(`${BRAND.name} · FIT CHECK`, 240, 236)
+  g.fillText(`${BRAND.name} · QR`, 240, 236)
   return c
 }
 
@@ -165,7 +165,7 @@ export function ShipBox() {
   }, [])
 
   useFrame(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const g = group.current
     if (!g) return
     g.visible = p > 0.659 && p < 0.726

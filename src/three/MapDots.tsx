@@ -13,7 +13,7 @@ import {
 } from 'three'
 import { PALETTE, WANTING_CITIES } from '../content'
 import { landDots, owners, project } from '../lib/geo'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { istanbulPulse, mapOpacity, mapReveal, requestLocal } from '../story'
 import { ScreenAnchor } from './ScreenAnchor'
 
@@ -176,7 +176,7 @@ export function MapDots() {
   const rings = useRef<(Mesh | null)[]>([])
 
   useFrame(({ clock }) => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const scale = (size.height * viewport.dpr) / (2 * Math.tan((camera.fov * Math.PI) / 360))
     const o = mapOpacity(p)
     land.m.uniforms.uScale.value = scale

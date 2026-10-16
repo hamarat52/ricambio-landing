@@ -789,3 +789,12 @@ html.reduced .hand-arrow--loop path {
 html.reduced .hand-arrow--loop path {
   stroke-dashoffset: 0;
 }
+
+/* Reduced motion: scenes swap with fades only */
+html.reduced .layer {
+  transition: opacity 0.4s ease;
+}
+
+.canvas-root canvas {
+  transition: opacity 0.35s ease;
+}

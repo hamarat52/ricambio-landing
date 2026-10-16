@@ -89,6 +89,23 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.toggle('reduced', reduced)
+    if (!reduced) return
+    // Reduced motion: the 3D shows one still per scene and changes with a fade.
+    let timer = 0
+    const unsub = useStore.subscribe(
+      (s) => s.sceneIndex,
+      () => {
+        const canvas = document.querySelector<HTMLCanvasElement>('.canvas-root canvas')
+        if (!canvas) return
+        canvas.style.opacity = '0'
+        window.clearTimeout(timer)
+        timer = window.setTimeout(() => (canvas.style.opacity = '1'), 200)
+      },
+    )
+    return () => {
+      unsub()
+      window.clearTimeout(timer)
+    }
   }, [reduced])
 
   useEffect(() => {

@@ -867,3 +867,43 @@
     width: min(240px, 70%);
   }
 }
+
+/* ─── Mobile: the phone owns the bottom of the screen ───────────────────── */
+@media (max-width: 767px) {
+  .phone-aside,
+  .rank-card {
+    top: auto;
+    bottom: calc(var(--phone-h) + 28px);
+  }
+
+  .rank-card {
+    left: auto;
+    right: var(--gutter);
+    width: auto;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .rank-card .rank {
+    display: none;
+  }
+
+  .layer--sparkle .copy--bl,
+  .layer--click .copy--bl {
+    top: calc(var(--header-h) + 12px);
+    bottom: auto;
+  }
+
+  .settings-card {
+    top: 38%;
+  }
+
+  .part-label:nth-child(2n) {
+    display: none;
+  }
+
+  .part-label {
+    font-size: 9.5px;
+  }
+}

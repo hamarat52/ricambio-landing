@@ -16,7 +16,6 @@ function screenOn(p: number, a: number, b: number, fade = 0.004): number {
 function local(p: number, id: 'search' | 'request') {
   const r = sceneRange(id)
   const t = remap(p, r.start, r.end)
-  if (useStore.getState().reducedMotion && p >= r.start && p <= r.end) return id === 'search' ? 0.9 : 0.97
   return t
 }
 
@@ -143,8 +142,7 @@ export function PartScreen() {
     el.style.opacity = on.toFixed(3)
     el.style.visibility = on > 0 ? 'visible' : 'hidden'
     if (on <= 0) return
-    const reduced = useStore.getState().reducedMotion
-    const t = reduced && p >= r.start && p <= r.end ? 0.9 : remap(p, r.start, r.end)
+    const t = remap(p, r.start, r.end)
     const b = BEATS.sparkle
 
     // White flash on the screen at the burst (with the 3D bloom around the phone)
@@ -244,8 +242,7 @@ export function FitScreen() {
     el.style.opacity = on.toFixed(3)
     el.style.visibility = on > 0 ? 'visible' : 'hidden'
     if (on <= 0) return
-    const reduced = useStore.getState().reducedMotion
-    const t = reduced && p >= r.start && p <= r.end ? 0.95 : remap(p, r.start, r.end)
+    const t = remap(p, r.start, r.end)
     const b = BEATS.click
     const scanK = beat(t, [b.form[0], b.form[0] + 0.06])
     const formK = power3Out(beat(t, [b.form[0] + 0.06, b.form[0] + 0.1]))

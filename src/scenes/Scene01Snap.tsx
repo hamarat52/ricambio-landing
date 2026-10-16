@@ -3,7 +3,7 @@ import { BEATS, sceneRange } from '../content'
 import { popOut, power2Out } from '../lib/easing'
 import { beat, remap } from '../lib/remap'
 import { useSceneProgress } from '../lib/useProgress'
-import { useCopy, useStore } from '../store'
+import { useCopy, useStore, storyProgress } from '../store'
 import { Annotation } from '../ui/Annotation'
 import { SceneLayer } from '../ui/SceneLayer'
 
@@ -38,7 +38,7 @@ export default function Scene01Snap() {
 
   const r = sceneRange('snap')
   const getDraw = useCallback(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     if (p < r.start || p > r.end + 0.004) return 0
     const t = remap(p, r.start, r.end)
     return useStore.getState().reducedMotion ? 1 : beat(t, BEATS.snap.annotate)

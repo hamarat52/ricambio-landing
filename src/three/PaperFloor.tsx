@@ -4,7 +4,7 @@ import { Color, PlaneGeometry, ShaderMaterial } from 'three'
 import { PALETTE } from '../content'
 import { neutralPreimage } from '../lib/color'
 import { remap } from '../lib/remap'
-import { useStore } from '../store'
+import { storyProgress } from '../store'
 import { carPose } from '../story'
 
 /**
@@ -84,7 +84,7 @@ export function PaperFloor() {
   }, [])
 
   useFrame(() => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     // The ring belongs to the turntable: visible in the hero and the finale.
     material.uniforms.uRing.value = Math.max(1 - remap(p, 0.04, 0.06), remap(p, 0.965, 0.99))
     material.uniforms.uRingAngle.value = carPose.angle

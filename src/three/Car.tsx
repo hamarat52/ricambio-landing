@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { Suspense, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react'
 import { type Group, Mesh, type Material, type PointLight } from 'three'
 import { power3InOut } from '../lib/easing'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { CAR, carGeometries } from './carGeometry'
 import { materials, setCutaway } from './materials'
 import { carPose, cutaway, turntableWeight } from '../story'
@@ -134,7 +134,7 @@ export function Car({ children }: { children?: ReactNode }) {
   useFrame((_, dt) => {
     const group = turn.current
     if (!group) return
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const w = reduced ? 0 : turntableWeight(p)
     const step = Math.min(dt, 0.1)
 

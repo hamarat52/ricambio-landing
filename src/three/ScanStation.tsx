@@ -20,7 +20,7 @@ import {
 import { BEATS, NUMBERS, PALETTE } from '../content'
 import { power2InOut, power3Out } from '../lib/easing'
 import { beat, lerp } from '../lib/remap'
-import { useStore } from '../store'
+import { useStore, storyProgress } from '../store'
 import { scanLocal } from '../story'
 import { clipDimensions, clipFaceted, clipGeometries, clipPointCloud } from './Clip'
 import { CLIP_MM } from './clipGeometry'
@@ -122,7 +122,7 @@ export function ScanStation() {
   }
 
   useFrame(({ clock }) => {
-    const p = useStore.getState().progress
+    const p = storyProgress()
     const t = scanLocal(p)
     const b = BEATS.scan
     const sweepK = beat(t, b.sweep, power2InOut)
