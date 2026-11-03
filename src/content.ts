@@ -195,11 +195,16 @@ export const LIBRARY_PARTS = [
 
 export type LibraryPartKey = (typeof LIBRARY_PARTS)[number]['key']
 
-/** CTA and footer targets. Point these at the platform once it is deployed. */
+/**
+ * CTA and footer targets. The platform is deployed next to the landing page,
+ * in its `app/` folder (hamaratlabs.com/okul-projeleri/ricambio/app/), with
+ * hash routes. Relative paths keep this working at any sub-path.
+ */
+export const PLATFORM = './app/'
 export const LINKS = {
-  findPart: '#find-your-part',
-  uploadPart: '#upload-a-part',
-  joinMaker: '#join-as-a-maker',
+  findPart: `${PLATFORM}#/`,
+  uploadPart: `${PLATFORM}#/upload`,
+  joinMaker: `${PLATFORM}#/centres`,
   howItWorks: '#top',
   safety: '#never-print',
   garages: '#sources',

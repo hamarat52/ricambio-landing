@@ -9,6 +9,14 @@
       content="The shared library of 3D files for parts nobody makes anymore — and the print shop that makes them real."
     />
     <meta name="theme-color" content="#D1D7DE" />
+    <script>
+      // Every asset path is relative, so the page must be served from a folder URL:
+      // /okul-projeleri/ricambio → /okul-projeleri/ricambio/ (query and hash kept).
+      ;(function (l) {
+        var p = l.pathname
+        if (!/\/$/.test(p) && !/\.[a-z0-9]+$/i.test(p)) l.replace(p + '/' + l.search + l.hash)
+      })(location)
+    </script>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
