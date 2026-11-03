@@ -217,9 +217,9 @@ export type Lang = 'en' | 'tr'
 
 const en = {
   meta: {
-    title: `${B} — parts that no longer exist, made again`,
+    title: `${B}: parts that no longer exist, made again`,
     description:
-      'The shared library of 3D files for parts nobody makes anymore — and the print shop that makes them real.',
+      'The shared library of 3D files for parts nobody makes anymore, and the print shop that makes them real.',
   },
   ui: {
     langLabel: 'Language',
@@ -253,9 +253,9 @@ const en = {
     bologna: 'Bologna',
   } as Record<string, string>,
   hero: {
-    label: `${B} — parts that no longer exist, made again.`,
+    label: `${B}: parts that no longer exist, made again.`,
     headline: ['Twenty years on the road.', 'Undone by three grams of plastic.'],
-    sub: 'The shared library of 3D files for parts nobody makes anymore — and the print shop that makes them real.',
+    sub: 'The shared library of 3D files for parts nobody makes anymore, and the print shop that makes them real.',
     scrollCue: 'Scroll',
   },
   snap: {
@@ -285,7 +285,7 @@ const en = {
   },
   scan: {
     headline: "Someone, somewhere, still has the part. That's enough.",
-    caption: 'MEANWHILE — TORINO',
+    caption: 'MEANWHILE: TORINO',
     notification: '{n} owners need the AC vent clip you have.',
     steps: ['Light sweep', 'Point cloud', 'Mesh', 'CAD'],
     pointsUnit: 'pts',
@@ -298,7 +298,7 @@ const en = {
     mirrorAxis: 'MIRROR AXIS',
     uploading: 'Uploading',
     file: {
-      title: 'AC vent clip — Alfa Romeo 146 (930)',
+      title: 'AC vent clip, Alfa Romeo 146 (930)',
       meta: 'v1 · 3MF + STEP · print settings included',
       material: 'Material: ASA (sun-exposed cabin)',
       contributor: 'Contributed by Luca, Torino',
@@ -345,7 +345,7 @@ const en = {
     badgeOne: 'Fit confirmed by {n} owner',
     badgeMany: 'Fit confirmed by {n} owners',
     rankingTitle: '146 · AC vent clip',
-    ranking: ['AC vent clip v1 — Luca, Torino', 'Universal vent clip, 3 sizes', 'Vent clip 145/146 — remix'],
+    ranking: ['AC vent clip v1 (Luca, Torino)', 'Universal vent clip, 3 sizes', 'Vent clip 145/146 (remix)'],
   },
   home: {
     headline: 'Have a printer? The file comes with everything your first print needs.',
@@ -403,9 +403,9 @@ export type Copy = typeof en
 
 const tr: Copy = {
   meta: {
-    title: `${B} — artık var olmayan parçalar, yeniden üretiliyor`,
+    title: `${B}: artık var olmayan parçalar, yeniden üretiliyor`,
     description:
-      'Artık kimsenin üretmediği parçaların ortak 3D dosya kütüphanesi — ve onları gerçeğe dönüştüren baskı atölyesi.',
+      'Artık kimsenin üretmediği parçaların ortak 3D dosya kütüphanesi ve onları gerçeğe dönüştüren baskı atölyesi.',
   },
   ui: {
     langLabel: 'Dil',
@@ -439,9 +439,9 @@ const tr: Copy = {
     bologna: 'Bologna',
   },
   hero: {
-    label: `${B} — artık var olmayan parçalar, yeniden üretiliyor.`,
+    label: `${B}: artık var olmayan parçalar, yeniden üretiliyor.`,
     headline: ['Yirmi yıldır yollarda.', 'Üç gramlık bir plastiğe yenildi.'],
-    sub: 'Artık kimsenin üretmediği parçaların ortak 3D dosya kütüphanesi — ve onları gerçeğe dönüştüren baskı atölyesi.',
+    sub: 'Artık kimsenin üretmediği parçaların ortak 3D dosya kütüphanesi ve onları gerçeğe dönüştüren baskı atölyesi.',
     scrollCue: 'Kaydır',
   },
   snap: {
@@ -471,7 +471,7 @@ const tr: Copy = {
   },
   scan: {
     headline: 'Bir yerlerde, birinin elinde o parça hâlâ var. Bu kadarı yeter.',
-    caption: 'BU SIRADA — TORINO',
+    caption: 'BU SIRADA: TORINO',
     notification: '{n} araç sahibi, sende olan klima menfez klipsini bekliyor.',
     steps: ['Işık taraması', 'Nokta bulutu', 'Mesh', 'CAD'],
     pointsUnit: 'nokta',
@@ -484,7 +484,7 @@ const tr: Copy = {
     mirrorAxis: 'SİMETRİ EKSENİ',
     uploading: 'Yükleniyor',
     file: {
-      title: 'Klima menfez klipsi — Alfa Romeo 146 (930)',
+      title: 'Klima menfez klipsi, Alfa Romeo 146 (930)',
       meta: 'v1 · 3MF + STEP · baskı ayarları dahil',
       material: 'Malzeme: ASA (güneş alan kabin)',
       contributor: 'Katkı: Luca, Torino',
@@ -531,7 +531,7 @@ const tr: Copy = {
     badgeOne: 'Uyumu {n} araç sahibi onayladı',
     badgeMany: 'Uyumu {n} araç sahibi onayladı',
     rankingTitle: '146 · klima menfez klipsi',
-    ranking: ['Klima menfez klipsi v1 — Luca, Torino', 'Üniversal menfez klipsi, 3 boy', 'Menfez klipsi 145/146 — remiks'],
+    ranking: ['Klima menfez klipsi v1 (Luca, Torino)', 'Üniversal menfez klipsi, 3 boy', 'Menfez klipsi 145/146 (remiks)'],
   },
   home: {
     headline: 'Yazıcın var mı? İlk baskın için gereken her şey dosyanın içinde.',
